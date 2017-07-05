@@ -1,0 +1,3 @@
+// configured options and settings
+#define Proto2_VERSION_MAJOR @Proto2_VERSION_MAJOR@
+#define Proto2_VERSION_MINOR @Proto2_VERSION_MINOR@

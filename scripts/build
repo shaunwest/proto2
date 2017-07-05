@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# XCode: need to be in build dir(?) to and run this:
+# cmake -G Xcode ../src
+
+# Basic build (?)
+# cmake ../src
