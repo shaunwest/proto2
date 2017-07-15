@@ -20,5 +20,9 @@ void NESInputManager::update(NESInput &nes_input) {
   nes_input.left = keyflagss[SDL_SCANCODE_LEFT];
   nes_input.right = keyflagss[SDL_SCANCODE_RIGHT];
   nes_input.start = keyflagss[SDL_SCANCODE_RETURN];
-  nes_input.debug_esc = keyflagss[SDL_SCANCODE_ESCAPE];
+  nes_input.esc = keyflagss[SDL_SCANCODE_ESCAPE];
+  
+  nes_input.fullscreen = keyflagss[SDL_SCANCODE_F];
+  nes_input.fullscreen_count = (nes_input.fullscreen) ?
+    nes_input.fullscreen_count + 1 : 0;
 }

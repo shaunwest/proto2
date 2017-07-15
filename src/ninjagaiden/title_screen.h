@@ -9,22 +9,22 @@
 #ifndef title_screen_h
 #define title_screen_h
 
-#include "video/renderer_sdl.h"
+#include "video/video_sdl.h"
 #include "control/nes_input_manager.h"
 #include "util/util.h"
+#include "game/screen.h"
 
 enum TitleAction {
   TITLE_NOACTION, TITLE_START
 };
 
-class TitleScreen {
+class TitleScreen : public Screen {
 public:
-  TitleScreen(const RendererSDL &renderer);
+  TitleScreen(VideoSDL &video);
   TitleAction update(const NESInput &nes_input);
-  void render(const RendererSDL &renderer);
+  void render(const VideoSDL &video) const;
 private:
   UniqueTexture background_texture;
-  Size size;
 };
 
 #endif /* title_screen_h */

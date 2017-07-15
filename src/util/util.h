@@ -13,10 +13,12 @@
 #include <chrono>
 #include <ctime>
 
+/*
 struct AssetPaths {
   std::string imagesPath;
   std::string fontsPath;
 };
+*/
 
 // Equivalent to "new". Built-in part of C++14 (http://en.cppreference.com/w/cpp/memory/unique_ptr/make_unique)
 template<typename T, typename ...Args>

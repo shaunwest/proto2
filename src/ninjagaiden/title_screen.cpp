@@ -8,9 +8,10 @@
 
 #include "title_screen.h"
 
-TitleScreen::TitleScreen(const RendererSDL &renderer) {
-  background_texture = renderer.create_texture("title.png");
-  SDL_QueryTexture(background_texture.get(), NULL, NULL, &size.width, &size.height);
+#define TITLE_IMAGE "title.png"
+
+TitleScreen::TitleScreen(VideoSDL &video) {
+  video.create_image(TITLE_IMAGE);
 }
 
 TitleAction TitleScreen::update(const NESInput &nes_input) {
@@ -21,9 +22,6 @@ TitleAction TitleScreen::update(const NESInput &nes_input) {
   return TITLE_NOACTION;
 }
 
-void TitleScreen::render(const RendererSDL &renderer) {
-  SDL_Rect src = {0, 0, size.width, size.height};
-  SDL_Rect dest = {0, 0, size.width, size.height};
-  renderer.render_texture(background_texture.get(), src, dest);
-  
+void TitleScreen::render(const VideoSDL &video) const {
+  video.render_image(TITLE_IMAGE);
 }

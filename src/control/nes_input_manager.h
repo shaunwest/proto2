@@ -22,7 +22,10 @@ struct NESInput {
   int start_count = 0;
   bool select = false;
   int select_count = 0;
-  bool debug_esc = false;
+  bool esc = false;
+  int esc_count = 0;
+  bool fullscreen = false;
+  int fullscreen_count = 0;
 };
 
 
