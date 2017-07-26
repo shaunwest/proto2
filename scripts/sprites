@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# This command generates spritesheets and sprite description json files from ASE (ASEPRITE) files.
+# NOTE: This should be run from the root of the project folder
+#
+
+# ASEPRITE command (probably should assume it's in PATH instead)
+ASEPRITE="/Applications/Aseprite/Aseprite.app/Contents/MacOS/aseprite"
+
+# Asset dev folder
+ASSET_DEV="asset_dev/ase"
+
+# Asset output folder
+ASSET_OUTPUT="assets/sprites"
+
+# Asset build folder
+ASSET_BUILD="build/assets/sprites"
+
+for SPRITE in ryu
+do
+  $ASEPRITE -b ${ASSET_DEV}/${SPRITE}/*.ase \
+    --sheet-pack \
+    --sheet ${ASSET_OUTPUT}/${SPRITE}.png \
+    --filename-format '{title}' \
+    --format json-array \
+    --data ${ASSET_OUTPUT}/${SPRITE}.json
+
+  if [ -d $ASSET_BUILD ] ; then
+    cp ${ASSET_OUTPUT}/${SPRITE}.png ${ASSET_OUTPUT}/${SPRITE}.json ${ASSET_BUILD}
+  fi
+done
+
+if [ -d $ASSET_BUILD ] ; then
+  echo "Sprite assets were copied to ./assets and ./build/assets";
+else
+  echo "Sprite assets were copied to ./assets";
+fi

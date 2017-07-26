@@ -1,4 +1,6 @@
 .DS_Store
 notes.txt
+notes2.txt
 build/
 build_xcode/
+*.swp

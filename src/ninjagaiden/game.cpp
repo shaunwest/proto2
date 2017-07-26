@@ -9,7 +9,11 @@
 #include "game.h"
 
 #include "util/log.h"
+#include "loader/tiled_loader.h"
 #include "title_screen.h"
+#include "level.h"
+
+LogLevel Logger::reportingLevel = LOG_DEBUG;
 
 Game::Game() {}
 
@@ -17,14 +21,18 @@ Game::Game(GameSpec game_spec) : game_spec(game_spec) {}
 
 int Game::start() {
   // Init video
-  VideoSDL video(game_spec.window, game_spec.asset_paths);
-  
+  VideoSDL video(game_spec.window);
+
   // Init input
   NESInputManager input_manager;
-  
-  // Init screens
-  TitleScreen title_screen = TitleScreen(video);
-  
+
+  // Init Level Loader
+  TiledLoader level_loader;
+
+  // Init inital view
+  UniqueView current_view = UniqueTitleScreen(new TitleScreen(video));
+
+  // Main game loop
   bool quit = false;
 
   while (!quit) {
@@ -43,10 +51,10 @@ int Game::start() {
           }
         }
       }
-      
+
       input_manager.update(game_spec.input);
-      
-      // Debug ESC to quit
+
+      // Hit ESC to quit, F to toggle fullscreen
       NESInput input_action = game_spec.input;
       if (input_action.esc) {
         std::cout << "ESC was pressed" << std::endl;
@@ -57,41 +65,55 @@ int Game::start() {
         game_spec.input.fullscreen_count = 0;
         video.init_window(game_spec.window);
       }
-      
+
       // UPDATE
-      switch(game_spec.current_screen) {
-        case TITLE_SCREEN: {
-          
-          TitleAction title_action = title_screen.update(game_spec.input);
-          if (title_action == TITLE_START) {
-            game_spec.current_screen = LEVEL_SCREEN;
-            game_spec.current_level = LEVEL_1;
+      switch(game_spec.current_view_id) {
+        case VIEW_TITLE: {
+          TitleAction title_action = (TitleAction)current_view->update(game_spec.input);
+
+          switch (title_action) {
+            case TITLE_ACTION_START:
+              game_spec.current_view_id = VIEW_LEVEL;
+              game_spec.current_level_id = LEVEL_1;
+              current_view = UniqueLevel(new Level("levels/level1_1.json", video, level_loader));
+              break;
+            case TITLE_ACTION_NONE:
+              break;
           }
+
           break;
         }
-        case LEVEL_SCREEN: {
+        case VIEW_LEVEL: {
+          LevelAction level_action = (LevelAction)current_view->update(game_spec.input);
+
+          switch (level_action) {
+            case LEVEL_ACTION_NONE:
+              break;
+          }
+
           // update(time_per_frame);
-          std::cout << "update level";
+          std::cout << "update level" << std::endl;
           break;
         }
       }
     }
-    
-    // RENDER (when a full frame has passed)
+
+    // RENDER when a full frame has passed
     if (render) {
       video.render_begin();
-      
-      switch(game_spec.current_screen) {
-      case TITLE_SCREEN:
-        title_screen.render(video);
-        break;
-      case LEVEL_SCREEN:
-        std::cout << "render level";
-        break;
+
+      switch(game_spec.current_view_id) {
+        case VIEW_TITLE:
+          current_view->render(video);
+          break;
+        case VIEW_LEVEL:
+          //std::cout << "render level" << std::endl;
+          current_view->render(video);
+          break;
       }
-      
+
       //renderer.render_string() << timer.print_time().str();
-      video.render_string("FPS: " + std::to_string(timer.get_time()->fps), Vector{0, 0});
+      video.render_string("FPS: " + std::to_string(timer.get_time()->fps), IntVector2{0, 0});
       video.render_end();
     }
   }

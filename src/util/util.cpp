@@ -8,6 +8,8 @@
 
 #include "util.h"
 
+#include <fstream>
+
 // Get the current time as a string formatted like 2017-06-19 21:32:38
 std::string time_now() {
   std::chrono::time_point<std::chrono::system_clock> now;
@@ -20,4 +22,13 @@ std::string time_now() {
   }
   
   return "";
+}
+
+// TODO some kind of error reporting...
+Json::Value get_json(std::string asset_path) {
+  Json::Value root;
+  std::ifstream config(asset_path, std::ifstream::binary);
+  config >> root;
+  
+  return root;
 }

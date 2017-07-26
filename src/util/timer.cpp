@@ -26,14 +26,14 @@ bool GameTimer::do_updates() {
     time.total_time += time.elapsed;
     time.fps = time.frame_count / time.total_time;
   }
-  
+
   frame_ready = (time.time_since_last_frame >= time.time_per_frame);
-  
+
   if (frame_ready) {
     time.time_since_last_frame -= time.time_per_frame;
     time.frame_count++;
   }
-  
+
   return frame_ready;
 }
 
@@ -47,11 +47,11 @@ float GameTimer::get_total_time() {
 
 std::ostringstream GameTimer::print_time() {
   std::ostringstream os;
-  
+
   os
     << "FPS  : " << time.fps << std::endl
     << "TIME : " << time.total_time << std::endl
     << "FRMS : " << time.frame_count << std::endl;
-  
+
   return os;
 }

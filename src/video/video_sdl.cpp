@@ -1,5 +1,5 @@
 //
-//  sdl_renderer.cpp
+//  vido_sdl.cpp
 //  Proto2
 //
 //  Created by Shaun West on 5/29/17.
@@ -8,26 +8,23 @@
 
 #include "video_sdl.h"
 
-#include "util/log.h"
-
 // Initialize all of the important SDL stuff
-VideoSDL::VideoSDL(const WindowSpec &window_spec, const AssetPaths &asset_paths) : asset_paths(asset_paths) {
-  
+VideoSDL::VideoSDL(const WindowSpec &window_spec) {
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     LOG(LOG_ERROR) << "Failed to init SDL";
     return;
   }
-  
+
   // Init image formats (PNG & JPG supported only)
   int imageFormats = IMG_INIT_PNG | IMG_INIT_JPG;
   int imageFormatsInitialized = IMG_Init(imageFormats);
   if ((imageFormatsInitialized & imageFormats) != imageFormats) {
-    std::cout << "Failed to init SDL Image" << std::endl;
+    LOG(LOG_ERROR) << "Failed to init SDL Image";
     return;
   }
-  
-  font = FontTTF(asset_paths.fontsPath + "/FreeSans.ttf");
-  
+
+  font = FontTTF("assets/fonts/FreeSans.ttf");
+
   init_window(window_spec);
 }
 
@@ -40,35 +37,35 @@ VideoSDL::~VideoSDL() {
 void VideoSDL::init_window(const WindowSpec &window_spec) {
   window = create_window(window_spec);
   renderer = create_renderer(window.get());
-  
+
   int display_index = SDL_GetWindowDisplayIndex(window.get());
   SDL_DisplayMode current;
   if (SDL_GetCurrentDisplayMode(display_index, &current) != 0) {
     LOG(LOG_ERROR) << "Failed to get display mode";
     return;
   }
-  
+
   SDL_SetRenderDrawColor(renderer.get(), 64, 64, 64, 255);
   SDL_RenderSetLogicalSize(
     renderer.get(),
     window_spec.resolution.width,
     window_spec.resolution.height
   );
-  
+
   if (images.size() > 0) {
     recreate_images();
   }
-  
-  LOG(LOG_INFO) << "video_sdl initialized";
+
+  LOG(LOG_INFO) << "Video initialized";
 }
 
 UniqueWindow VideoSDL::create_window(const WindowSpec &window_spec) const {
   auto flags = 0;
-  
+
   if (window_spec.fullscreen) {
     flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
   }
-  
+
   // Create the main game window
   UniqueWindow new_window(SDL_CreateWindow(
     window_spec.title.c_str(),
@@ -78,15 +75,15 @@ UniqueWindow VideoSDL::create_window(const WindowSpec &window_spec) const {
     window_spec.size.height,
     flags
   ));
-  
+
   // Check that the window was successfully created
   if (new_window == nullptr) {
-    std::cout << "Could not create window: " << SDL_GetError() << std::endl;
+    LOG(LOG_ERROR) << "Could not create window: " << SDL_GetError();
     return nullptr;
   }
-  
+
   LOG(LOG_INFO) << "Window initialized";
-  
+
   return new_window;
 }
 
@@ -97,33 +94,33 @@ UniqueRenderer VideoSDL::create_renderer(SDL_Window * window) const {
 
   // Check that renderer was successfully created
   if (new_renderer == nullptr) {
-    std::cout << "SDL_CreateRenderer Error" << std::endl;
+    LOG(LOG_ERROR) << "SDL_CreateRenderer Error: " << SDL_GetError();
     return nullptr;
   }
-  
+
   return new_renderer;
 }
 
-void VideoSDL::create_image(std::string image_name) {
-  std::string image_path = asset_paths.imagesPath + "/" + image_name;
-  surfaces[image_name] = UniqueSurface(IMG_Load(image_path.c_str()));
-  
-  if (surfaces[image_name] == nullptr) {
-    std::cout << "Image not found: " << image_name << std::endl;
+// TODO I think this should maybe map the path string to an integer ID
+void VideoSDL::create_image(std::string image_path) {
+  std::string full_image_path = "assets/" + image_path;
+  surfaces[image_path] = UniqueSurface(IMG_Load(full_image_path.c_str()));
+
+  if (surfaces[image_path] == nullptr) {
+    LOG(LOG_ERROR) << "Image not found: " << full_image_path;
   }
-  
-  images[image_name] = UniqueTexture(SDL_CreateTextureFromSurface(
-    renderer.get(),
-    surfaces[image_name].get())
-  );
-  
-  //SDL_FreeSurface(temp_surface);
+  else {
+    images[image_path] = UniqueTexture(SDL_CreateTextureFromSurface(
+      renderer.get(),
+      surfaces[image_path].get())
+    );
+  }
 }
 
-void VideoSDL::create_image(std::string image_name, SDL_Surface *surface) {
-  images[image_name] = UniqueTexture(SDL_CreateTextureFromSurface(
+void VideoSDL::create_image(std::string image_path, SDL_Surface *surface) {
+  images[image_path] = UniqueTexture(SDL_CreateTextureFromSurface(
     renderer.get(),
-    surfaces[image_name].get())
+    surfaces[image_path].get())
   );
 }
 
@@ -145,7 +142,7 @@ void VideoSDL::render_end() const {
   SDL_RenderPresent(renderer.get());
 }
 
-void VideoSDL::render_string(std::string str, Vector position) const {
+void VideoSDL::render_string(std::string str, IntVector2 position) const {
   SDL_Surface* stats_surface = font.get_font(str.c_str());
   SDL_Texture* stats_texture = SDL_CreateTextureFromSurface(renderer.get(), stats_surface);
   SDL_Rect rect = { position.x, position.y, 0, 0 };
@@ -159,8 +156,19 @@ void VideoSDL::render_texture(SDL_Texture *texture) const {
   SDL_RenderCopy(renderer.get(), texture, nullptr, nullptr);
 }
 
-void VideoSDL::render_image(std::string image_name) const {
-  render_texture(images.at(image_name).get());
+void VideoSDL::render_texture(SDL_Texture *texture, IntRect src, IntRect dest) const {
+  SDL_Rect src_rect = {src.x, src.y, src.width, src.height};
+  SDL_Rect dest_rect = {dest.x, dest.y, dest.width, dest.height};
+  SDL_RenderCopy(renderer.get(), texture, &src_rect, &dest_rect);
+}
+
+// TODO should probably be looked up by an integer ID rather than string
+void VideoSDL::render_image(std::string image_path) const {
+  render_texture(images.at(image_path).get());
+}
+
+void VideoSDL::render_image(std::string image_path, IntRect src, IntRect dest) const {
+  render_texture(images.at(image_path).get(), src, dest);
 }
 
 // TODO not sure if this is really necessary

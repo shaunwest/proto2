@@ -8,18 +8,18 @@
 
 #include "title_screen.h"
 
-#define TITLE_IMAGE "title.png"
+#define TITLE_IMAGE "sprites/title.png"
 
 TitleScreen::TitleScreen(VideoSDL &video) {
   video.create_image(TITLE_IMAGE);
 }
 
-TitleAction TitleScreen::update(const NESInput &nes_input) {
+int TitleScreen::update(const NESInput &nes_input) {
   if (nes_input.start) {
-    return TITLE_START;
+    return TITLE_ACTION_START;
   }
-  
-  return TITLE_NOACTION;
+
+  return TITLE_ACTION_NONE;
 }
 
 void TitleScreen::render(const VideoSDL &video) const {

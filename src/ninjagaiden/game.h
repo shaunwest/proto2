@@ -6,19 +6,13 @@
 //
 //
 
-// PROJECT: error handling (for major errors at least)
-// PROJECT: Render the Ninja Gaiden start screen and handle input
-// PROJECT: Screen sizing/scaling
-// PROJECT: Transition
-// PROJECT: Better logging class
+// PROJECT: error handling (for major errors at least). Disable exceptions?
+// PROJECT: Do transition from title to game screen
 
-// best practices: how to handle errors
 
 #ifndef game_h
 #define game_h
 
-
-// TODO make these constexpr instead?
 #define WINDOW_TITLE    "Ninja Gaiden"
 #define WINDOW_WIDTH    512
 #define WINDOW_HEIGHT   480
@@ -26,8 +20,10 @@
 #define LOGICAL_WIDTH   256
 #define LOGICAL_HEIGHT  240
 
-#define ASSETS_IMAGES "assets/images"
-#define ASSETS_FONTS  "assets/fonts"
+#define START_LIVES 3
+#define START_SCORE 0
+#define START_NINPO 0
+#define START_ITEM  ITEM_NONE
 
 #include "video/video_sdl.h"
 #include "util/timer.h"
@@ -35,9 +31,9 @@
 #include "control/nes_input_manager.h"
 
 // TODO what are new C++11 best practices for enums?
-enum ScreenId {
-  TITLE_SCREEN,
-  LEVEL_SCREEN
+enum ViewId {
+  VIEW_TITLE,
+  VIEW_LEVEL
 };
 
 enum LevelId {
@@ -45,15 +41,32 @@ enum LevelId {
   LEVEL_1
 };
 
-enum Phase {
-  CREATE,
-  UPDATE
+enum ItemId {
+  ITEM_NONE,
+  ITEM_SHURIKEN,
+  ITEM_SPIN
 };
 
+struct PlayerStats {
+  char lives;
+  unsigned int score;
+  char ninpo;
+  ItemId item;
+};
+
+/*
+// TODO Move to a sprite header?
+enum SpriteDirection { DIR_RIGHT, DIR_LEFT, DIR_UP, DIR_DOWN };
+
+// TODO Move to a sprite header?
+struct SpriteData {
+  IntVector2 position;
+  IntRect hitbox; // is it always the same in NG?
+  SpriteDirection direction;
+};
+*/
+
 struct GameSpec {
-  const AssetPaths asset_paths = {
-    ASSETS_IMAGES, ASSETS_FONTS
-  };
   WindowSpec window = {
     WINDOW_TITLE,
     {WINDOW_WIDTH, WINDOW_HEIGHT},
@@ -61,9 +74,11 @@ struct GameSpec {
     FULLSCREEN
   };
   NESInput input;
-  ScreenId current_screen = TITLE_SCREEN;
-  LevelId current_level = LEVEL_NONE;
-  Phase phase = CREATE;
+  ViewId current_view_id = VIEW_TITLE;
+  LevelId current_level_id = LEVEL_NONE;
+  PlayerStats player_stats = {
+    START_LIVES, START_SCORE, START_NINPO, START_ITEM
+  };
 };
 
 class Game {

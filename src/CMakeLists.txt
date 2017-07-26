@@ -13,10 +13,10 @@ set (EXECUTABLE_NAME "proto2")
 # OSX minimum version supported
 set (CMAKE_OSX_DEPLOYMENT_TARGET 10.11.6)
 
-# Get all source files in the source root
-#file (GLOB SRC_FILES "${PROJECT_SOURCE_DIR}/*.cpp")
-#file (GLOB HEADER_FILES "${PROJECT_SOURCE_DIR}/*.h")
+# Export compile commands
+set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Get all source files in the source root
 file (GLOB_RECURSE SRC_FILES "${PROJECT_SOURCE_DIR}/*.cpp" "${PROJECT_SOURCE_DIR}/*.c")
 file (GLOB_RECURSE HEADER_FILES "${PROJECT_SOURCE_DIR}/*.h")
 
@@ -40,7 +40,7 @@ SOURCE_GROUP_BY_FOLDER()
 configure_file (
   "${PROJECT_SOURCE_DIR}/app-config.h.in"
   "${PROJECT_BINARY_DIR}/app-config.h"
-  )
+)
 
 # Add the binary tree to the search path for include files
 # so that we will find app-config.h
@@ -49,23 +49,8 @@ include_directories (${PROJECT_BINARY_DIR})
 # Add source dir to include directories
 include_directories (${PROJECT_SOURCE_DIR})
 
-
-# JSONCPP (is this needed anymore??)
-# --------------------------------------------------------------------------------------
-#add_subdirectory ("json")
-#include_directories ("${PROJECT_SOURCE_DIR}/json")
-#file (GLOB JSON_HEADER_FILES "${PROJECT_SOURCE_DIR}/json/*.h")
-
-
-# Xcode
-# --------------------------------------------------------------------------------------
-#source_group("Header Files\\json" FILES ${JSON_HEADER_FILES})
-
-
 # EXECUTABLE
 # --------------------------------------------------------------------------------------
-
-#add_executable (${EXECUTABLE_NAME} ${SRC_FILES} ${HEADER_FILES} ${JSON_HEADER_FILES})
 add_executable (${EXECUTABLE_NAME} ${SRC_FILES} ${HEADER_FILES})
 target_link_libraries (${EXECUTABLE_NAME} ${EXTRA_LIBS})
 
@@ -81,7 +66,7 @@ set_target_properties(${EXECUTABLE_NAME} PROPERTIES
 # --------------------------------------------------------------------------------------
 add_custom_command(TARGET ${EXECUTABLE_NAME} POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory
-    "${CMAKE_SOURCE_DIR}/../assets" "$<TARGET_FILE_DIR:proto2>/assets")
+  "${CMAKE_SOURCE_DIR}/../assets" "$<TARGET_FILE_DIR:${EXECUTABLE_NAME}>/assets")
 
 
 # EXTERNAL LIBRARIES

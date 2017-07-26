@@ -11,10 +11,15 @@
 FontTTF::FontTTF() {}
 
 FontTTF::FontTTF(std::string font_path) {
-  if(!TTF_WasInit() && TTF_Init() == -1) {
+  if (!TTF_WasInit() && TTF_Init() == -1) {
     std::cout << "TTF_Init: " << TTF_GetError() << std::endl;
   }
+  
   font = UniqueFont(TTF_OpenFont(font_path.c_str(), 16));
+  
+  if (font == nullptr) {
+    std::cout << "Font load error: " << TTF_GetError() << std::endl;
+  }
 }
 
 SDL_Surface * FontTTF::get_font(std::string str) const {
