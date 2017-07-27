@@ -8,7 +8,7 @@
 
 #include "title_screen.h"
 
-#define TITLE_IMAGE "sprites/title.png"
+#define TITLE_IMAGE "assets/sprites/title.png"
 
 TitleScreen::TitleScreen(VideoSDL &video) {
   video.create_image(TITLE_IMAGE);

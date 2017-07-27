@@ -24,19 +24,19 @@ struct SDLDeleter
 {
   void operator()(SDL_Surface *p) const {
     SDL_FreeSurface(p);
-    //LOG(LOG_INFO) << "SDL Surface freed";
+    LOG(LOG_INFO) << "SDL Surface freed";
   }
   void operator()(SDL_Texture *p) const {
     SDL_DestroyTexture(p);
-    //LOG(LOG_INFO) << "SDL Texture destroyed";
+    LOG(LOG_INFO) << "SDL Texture destroyed";
   }
   void operator()(SDL_Renderer *r) const {
     SDL_DestroyRenderer(r);
-    //LOG(LOG_INFO) << "SDL Renderer destroyed";
+    LOG(LOG_INFO) << "SDL Renderer destroyed";
   }
   void operator()(SDL_Window *w) const {
     SDL_DestroyWindow(w);
-    //LOG(LOG_INFO) << "SDL Window destroyed";
+    LOG(LOG_INFO) << "SDL Window destroyed";
   }
 };
 

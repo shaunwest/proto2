@@ -103,7 +103,7 @@ UniqueRenderer VideoSDL::create_renderer(SDL_Window * window) const {
 
 // TODO I think this should maybe map the path string to an integer ID
 void VideoSDL::create_image(std::string image_path) {
-  std::string full_image_path = "assets/" + image_path;
+  std::string full_image_path = image_path;
   surfaces[image_path] = UniqueSurface(IMG_Load(full_image_path.c_str()));
 
   if (surfaces[image_path] == nullptr) {

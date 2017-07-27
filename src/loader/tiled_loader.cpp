@@ -9,10 +9,12 @@
 #include "tiled_loader.h"
 
 #include "util/util.h"
+#include "util/log.h"
 
 #define PROPERTIES_KEY "properties"
+#define SUBTYPE_KEY "subtype"
 #define COLLISION_LAYER "collision"
-#define ENTITY_LAYER "entity"
+#define SPRITE_LAYER "sprite"
 #define BACKGROUND_LAYER "background"
 
 TiledLoader::TiledLoader() {}
@@ -26,23 +28,22 @@ Layers TiledLoader::load(std::string json_path) {
 Layers TiledLoader::get_layers(Json::Value layers_config) {
   Layers new_layers;
 
-  // do for :
-  for (int index = 0; index < layers_config.size(); ++index) {
-    Json::Value layer_config = layers_config[index];
+  for (auto layer_config : layers_config) {
+    if (!layer_config.isMember(PROPERTIES_KEY)) {
+      continue;
+    }
 
-    if (layer_config.isMember(PROPERTIES_KEY)) {
-      if (layer_config[PROPERTIES_KEY]["subtype"] == COLLISION_LAYER) {
-        new_layers.collision_layer = get_collision_layer(layer_config);
-      }
-      else if (layer_config[PROPERTIES_KEY]["subtype"] == ENTITY_LAYER) {
-        new_layers.sprite_layer = get_sprite_layer(layer_config);
-      }
-      else if (layer_config[PROPERTIES_KEY]["subtype"] == BACKGROUND_LAYER) {
-        new_layers.background_layer = get_background_layer(layer_config);
-      }
-      else {
-        std::cout << "No valid subtype found for layer." << std::endl;
-      }
+    if (layer_config[PROPERTIES_KEY][SUBTYPE_KEY] == COLLISION_LAYER) {
+      new_layers.collision_layer = get_collision_layer(layer_config);
+    }
+    else if (layer_config[PROPERTIES_KEY][SUBTYPE_KEY] == SPRITE_LAYER) {
+      new_layers.sprite_layer = get_sprite_layer(layer_config);
+    }
+    else if (layer_config[PROPERTIES_KEY][SUBTYPE_KEY] == BACKGROUND_LAYER) {
+      new_layers.background_layer = get_background_layer(layer_config);
+    }
+    else {
+      LOG(LOG_WARNING) << "No valid subtype found for layer.";
     }
   }
 
@@ -58,7 +59,7 @@ CollisionLayer TiledLoader::get_collision_layer(Json::Value layer_config) {
     Json::Value object = objects[i];
 
     if (object.isMember("polyline")) {
-      std::cout << "Polyline isn't implemented!" << std::endl;
+      LOG(LOG_WARNING) << "Polyline isn't implemented!";
     }
     else {
       new_layer.boxes.push_back(get_collision_box(object));
@@ -82,7 +83,7 @@ CollisionBox TiledLoader::get_collision_box(Json::Value box_config) {
   return box;
 }
 
-// Get data for a single entity layer from the provided JSON config
+// Get data for a single sprite layer from the provided JSON config
 SpriteLayer TiledLoader::get_sprite_layer(Json::Value layer_config) {
   Json::Value objects = layer_config["objects"];
   SpriteLayer new_layer;

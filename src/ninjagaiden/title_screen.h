@@ -24,7 +24,7 @@ public:
   int update(const NESInput &nes_input);
   void render(const VideoSDL &video) const;
 private:
-  UniqueTexture background_texture;
+  //UniqueTexture background_texture;
 };
 
 typedef std::unique_ptr<TitleScreen> UniqueTitleScreen;

@@ -15,12 +15,14 @@
 
 #include <iostream>
 
+#include "util/log.h"
+
 struct FontDeleter
 {
   void operator()(TTF_Font *f) const {
     TTF_CloseFont(f);
     TTF_Quit();
-    std::cout << "TTF Font Closed" << std::endl;
+    LOG(LOG_INFO) << "TTF Font Closed";
   }
 };
 

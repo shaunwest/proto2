@@ -12,13 +12,13 @@ FontTTF::FontTTF() {}
 
 FontTTF::FontTTF(std::string font_path) {
   if (!TTF_WasInit() && TTF_Init() == -1) {
-    std::cout << "TTF_Init: " << TTF_GetError() << std::endl;
+    LOG(LOG_ERROR) << "TTF_Init: " << TTF_GetError();
   }
-  
+
   font = UniqueFont(TTF_OpenFont(font_path.c_str(), 16));
-  
+
   if (font == nullptr) {
-    std::cout << "Font load error: " << TTF_GetError() << std::endl;
+    LOG(LOG_ERROR) << "Font load error: " << TTF_GetError();
   }
 }
 

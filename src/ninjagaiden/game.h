@@ -13,6 +13,7 @@
 #ifndef game_h
 #define game_h
 
+// TODO move these to app-config?
 #define WINDOW_TITLE    "Ninja Gaiden"
 #define WINDOW_WIDTH    512
 #define WINDOW_HEIGHT   480

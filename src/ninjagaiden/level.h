@@ -11,10 +11,12 @@
 
 #include <iostream>
 
+#include "player.h"
 #include "json/json.h"
 #include "game/view.h"
 #include "video/video_sdl.h"
 #include "loader/tiled_loader.h"
+#include "loader/aseprite_loader.h"
 
 enum LevelAction {
   LEVEL_ACTION_NONE
@@ -23,11 +25,12 @@ enum LevelAction {
 class Level : public View
 {
 public:
-  Level(std::string level_path, VideoSDL &video, TiledLoader &level_loader);
+  Level(std::string level_path, VideoSDL &video);
   int update(const NESInput &nes_input);
   void render(const VideoSDL &video) const;
 private:
   Layers layers;
+  Player player;
 };
 
 typedef std::unique_ptr<Level> UniqueLevel;

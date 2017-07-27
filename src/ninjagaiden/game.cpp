@@ -9,7 +9,6 @@
 #include "game.h"
 
 #include "util/log.h"
-#include "loader/tiled_loader.h"
 #include "title_screen.h"
 #include "level.h"
 
@@ -25,9 +24,6 @@ int Game::start() {
 
   // Init input
   NESInputManager input_manager;
-
-  // Init Level Loader
-  TiledLoader level_loader;
 
   // Init inital view
   UniqueView current_view = UniqueTitleScreen(new TitleScreen(video));
@@ -45,7 +41,7 @@ int Game::start() {
       while(SDL_PollEvent(&sdl_event)) {
         switch (sdl_event.type) {
           case SDL_QUIT: {
-            std::cout << "SDL Quit Event" << std::endl;
+            LOG(LOG_INFO) << "SDL Quit Event";
             quit = true;
             break;
           }
@@ -57,10 +53,10 @@ int Game::start() {
       // Hit ESC to quit, F to toggle fullscreen
       NESInput input_action = game_spec.input;
       if (input_action.esc) {
-        std::cout << "ESC was pressed" << std::endl;
+        LOG(LOG_INFO) << "ESC was pressed";
         quit = true;
       } else if (input_action.fullscreen && input_action.fullscreen_count > 15) {
-        std::cout << "F was pressed" << std::endl;
+        LOG(LOG_INFO) << "F was pressed";
         game_spec.window.fullscreen = !game_spec.window.fullscreen;
         game_spec.input.fullscreen_count = 0;
         video.init_window(game_spec.window);
@@ -75,7 +71,7 @@ int Game::start() {
             case TITLE_ACTION_START:
               game_spec.current_view_id = VIEW_LEVEL;
               game_spec.current_level_id = LEVEL_1;
-              current_view = UniqueLevel(new Level("levels/level1_1.json", video, level_loader));
+              current_view = UniqueLevel(new Level("levels/level1_1.json", video));
               break;
             case TITLE_ACTION_NONE:
               break;

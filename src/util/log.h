@@ -19,6 +19,7 @@ Logger().out(level)
 
 #include "util/util.h"
 
+// TODO does Level confuse things with the game level stuff?
 enum LogLevel {LOG_ERROR, LOG_WARNING, LOG_INFO, LOG_DEBUG};
 
 inline std::string log_level2str(LogLevel level) {
