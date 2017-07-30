@@ -28,7 +28,6 @@ struct NESInput {
   int fullscreen_count = 0;
 };
 
-
 class NESInputManager {
 public:
   NESInputManager();

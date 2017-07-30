@@ -61,25 +61,17 @@ struct SpriteFrame {
 typedef std::map<std::string, std::vector<SpriteFrame>> FrameMap;
 
 struct SpriteFrameset {
+  int image_id;
   int sprite_width;
   int sprite_height;
-  std::string current_sequence;
+  //std::string current_sequence; // What?
   FrameMap frames;
 };
 
-typedef std::map<std::string, SpriteFrameset> SpriteFramesetList;
-
-/*
-struct SpriteAnimation {
-  std::string frameset_id = "default";
-  std::string current_sequence = "default";
-  float duration_count = 0.0f;
-  int current_sequence_index = 0;
-};
-*/
+typedef std::map<int, SpriteFrameset> SpriteFramesets;
 
 struct SpriteAnimation {
-  std::string frameset_id;
+  int frameset_id;
   std::string current_sequence;
   float duration_count;
   int current_sequence_index;
@@ -88,8 +80,9 @@ struct SpriteAnimation {
 enum SpriteDirection { DIR_RIGHT, DIR_LEFT, DIR_UP, DIR_DOWN };
 enum SpriteAi { AI_NONE, AI_BASIC };
 
+// TODO should this be SpriteSpec? Should other VOs follow same scheme?
 struct Sprite {
-  std::string sprite_id;
+  std::string type;
   SpriteAnimation animation;
   IntVector2 position;
   int width; // TODO use Size
@@ -114,6 +107,15 @@ struct Layers {
   CollisionLayer collision_layer;
   SpriteLayer sprite_layer;
   BackgroundLayer background_layer;
+};
+
+enum LevelId { LEVEL_1 };
+
+struct LevelSpec {
+  LevelId level_id;
+  SpriteFramesets sprite_framesets;
+  Layers layers;
+  Sprite player;
 };
 
 #endif /* level_data_h */

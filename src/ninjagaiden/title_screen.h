@@ -12,19 +12,19 @@
 #include "video/video_sdl.h"
 #include "control/nes_input_manager.h"
 #include "util/util.h"
-#include "game/view.h"
+#include "game/screen_view.h"
 
 enum TitleAction {
   TITLE_ACTION_NONE, TITLE_ACTION_START
 };
 
-class TitleScreen : public View {
+class TitleScreen : public ScreenView {
 public:
   TitleScreen(VideoSDL &video);
-  int update(const NESInput &nes_input);
+  ScreenAction update(const NESInput &nes_input);
   void render(const VideoSDL &video) const;
 private:
-  //UniqueTexture background_texture;
+  int titleImageId;
 };
 
 typedef std::unique_ptr<TitleScreen> UniqueTitleScreen;

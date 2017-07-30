@@ -19,13 +19,14 @@ SpriteFrameset AsepriteLoader::get_frameset(Json::Value frameset_config, VideoSD
   Json::Value meta_config = frameset_config["meta"];
   Json::Value frames_config = frameset_config["frames"];
 
-  video.create_image(meta_config.get("image", "UTF-32" ).asString());
+  int image_id = video.create_image(meta_config.get("image", "UTF-32" ).asString());
 
   // Assume dimensions of first frame apply to all frames
   SpriteFrameset frameset = {
+    image_id,
     frames_config[0]["frame"]["w"].asInt(),
-    frames_config[0]["frame"]["h"].asInt(),
-    "default"
+    frames_config[0]["frame"]["h"].asInt()
+    //"default" // what?
   };
 
   // TODO use newer C++11 loops?

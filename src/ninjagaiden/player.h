@@ -11,14 +11,15 @@
 
 #include "loader/aseprite_loader.h"
 #include "video/video_sdl.h"
+#include "sprite/sprite_animator.h"
+#include "game/level_data.h"
 
 class Player
 {
 public:
   Player();
-  Player(VideoSDL &video, AsepriteLoader &sprite_loader);
-  int update();
-  void render(const VideoSDL &video) const;
+  int update(Sprite &player_data, float elapsed);
+  void render(const Sprite &player_data, SpriteFrameset &frameset, const VideoSDL &video) const;
 };
 
 #endif

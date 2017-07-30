@@ -8,9 +8,13 @@
 
 #include "game.h"
 
-#include "util/log.h"
-#include "title_screen.h"
 #include "level.h"
+
+#include "util/log.h"
+#include "game/level_view.h"
+#include "game/screen_view.h"
+#include "screen_dispatcher.h"
+#include "level_dispatcher.h"
 
 LogLevel Logger::reportingLevel = LOG_DEBUG;
 
@@ -25,8 +29,9 @@ int Game::start() {
   // Init input
   NESInputManager input_manager;
 
-  // Init inital view
-  UniqueView current_view = UniqueTitleScreen(new TitleScreen(video));
+  // Create dispatchers
+  ScreenDispatcher screen_dispatcher(video);
+  LevelDispatcher level_dispatcher(video);
 
   // Main game loop
   bool quit = false;
@@ -63,32 +68,29 @@ int Game::start() {
       }
 
       // UPDATE
-      switch(game_spec.current_view_id) {
-        case VIEW_TITLE: {
-          TitleAction title_action = (TitleAction)current_view->update(game_spec.input);
+      switch (game_spec.view_mode) {
+        case VIEW_SCREEN: {
+          ScreenDispatch dispatch = screen_dispatcher.update(game_spec.screen_id, game_spec.input);
 
-          switch (title_action) {
-            case TITLE_ACTION_START:
-              game_spec.current_view_id = VIEW_LEVEL;
-              game_spec.current_level_id = LEVEL_1;
-              current_view = UniqueLevel(new Level("levels/level1_1.json", video));
+          switch (dispatch) {
+            case SCREEN_DISPATCH_START_GAME:
+              game_spec.view_mode = VIEW_LEVEL;
+              game_spec.level_spec.level_id = LEVEL_1;
               break;
-            case TITLE_ACTION_NONE:
+            case SCREEN_DISPATCH_NONE:
               break;
           }
 
           break;
         }
         case VIEW_LEVEL: {
-          LevelAction level_action = (LevelAction)current_view->update(game_spec.input);
+          LevelDispatch dispatch = level_dispatcher.update(game_spec.level_spec, game_spec.input);
 
-          switch (level_action) {
-            case LEVEL_ACTION_NONE:
+          switch (dispatch) {
+            case LEVEL_DISPATCH_NONE:
               break;
           }
 
-          // update(time_per_frame);
-          std::cout << "update level" << std::endl;
           break;
         }
       }
@@ -98,13 +100,12 @@ int Game::start() {
     if (render) {
       video.render_begin();
 
-      switch(game_spec.current_view_id) {
-        case VIEW_TITLE:
-          current_view->render(video);
+      switch(game_spec.view_mode) {
+        case VIEW_SCREEN:
+          screen_dispatcher.render(game_spec.screen_id);
           break;
         case VIEW_LEVEL:
-          //std::cout << "render level" << std::endl;
-          current_view->render(video);
+          level_dispatcher.render(game_spec.level_spec);
           break;
       }
 

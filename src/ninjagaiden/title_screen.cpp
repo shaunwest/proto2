@@ -11,17 +11,17 @@
 #define TITLE_IMAGE "assets/sprites/title.png"
 
 TitleScreen::TitleScreen(VideoSDL &video) {
-  video.create_image(TITLE_IMAGE);
+  titleImageId = video.create_image(TITLE_IMAGE);
 }
 
-int TitleScreen::update(const NESInput &nes_input) {
+ScreenAction TitleScreen::update(const NESInput &nes_input) {
   if (nes_input.start) {
-    return TITLE_ACTION_START;
+    return SCREEN_ACTION_START;
   }
 
-  return TITLE_ACTION_NONE;
+  return SCREEN_ACTION_NONE;
 }
 
 void TitleScreen::render(const VideoSDL &video) const {
-  video.render_image(TITLE_IMAGE);
+  video.render_image(titleImageId);
 }

@@ -20,6 +20,14 @@
 #include "util/log.h"
 #include "font_ttf.h"
 
+struct WindowSpec
+{
+  std::string title;
+  Size size;
+  Size resolution;
+  bool fullscreen;
+};
+
 struct SDLDeleter
 {
   void operator()(SDL_Surface *p) const {
@@ -45,22 +53,14 @@ typedef std::unique_ptr<SDL_Texture, SDLDeleter> UniqueTexture;
 typedef std::unique_ptr<SDL_Renderer, SDLDeleter> UniqueRenderer;
 typedef std::unique_ptr<SDL_Window, SDLDeleter> UniqueWindow;
 
-struct WindowSpec
-{
-  std::string title;
-  Size size;
-  Size resolution;
-  bool fullscreen;
-};
-
 class VideoSDL
 {
 public:
   VideoSDL(const WindowSpec &window_spec);
   ~VideoSDL();
   void init_window(const WindowSpec &window_spec);
-  void create_image(std::string image_path);
-  void create_image(std::string image_path, SDL_Surface *surface);
+  int create_image(std::string image_path);
+  void create_image(int image_id, SDL_Surface *surface);
   void recreate_images();
   UniqueWindow create_window(const WindowSpec &window_spec) const;
   UniqueRenderer create_renderer(SDL_Window * window) const;
@@ -68,16 +68,17 @@ public:
   void render_end() const;
   void render_texture(SDL_Texture *texture) const;
   void render_texture(SDL_Texture *texture, IntRect src, IntRect dest) const;
-  void render_image(std::string image_path) const;
-  void render_image(std::string image_path, IntRect src, IntRect dest) const;
+  void render_image(int image_id) const;
+  void render_image(int image_id, IntRect src, IntRect dest) const;
   void render_string(std::string str, IntVector2 position) const;
   void get_display_mode();
 private:
   UniqueRenderer renderer;
   UniqueWindow window;
   FontTTF font;
-  std::map<std::string, UniqueSurface> surfaces;
-  std::map<std::string, UniqueTexture> images;
+  std::map<int, UniqueSurface> surfaces;
+  std::map<int, UniqueTexture> images;
+  int image_id;
 };
 
 #endif /* video_sdl_h */

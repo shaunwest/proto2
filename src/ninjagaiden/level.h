@@ -12,25 +12,22 @@
 #include <iostream>
 
 #include "player.h"
+
 #include "json/json.h"
-#include "game/view.h"
+#include "game/level_view.h"
+#include "game/level_data.h"
 #include "video/video_sdl.h"
-#include "loader/tiled_loader.h"
-#include "loader/aseprite_loader.h"
 
-enum LevelAction {
-  LEVEL_ACTION_NONE
-};
-
-class Level : public View
+class Level : public LevelView
 {
 public:
-  Level(std::string level_path, VideoSDL &video);
-  int update(const NESInput &nes_input);
-  void render(const VideoSDL &video) const;
+  Level(LevelSpec &level_spec, VideoSDL &video);
+  LevelAction update(const NESInput &nes_input);
+  void render(LevelSpec &level_spec, const VideoSDL &video) const;
 private:
   Layers layers;
   Player player;
+  int backgroundImageId;
 };
 
 typedef std::unique_ptr<Level> UniqueLevel;

@@ -1,29 +1,38 @@
 //
-//  view.h
+//  screen_view.h
 //  Proto2
 //
 //  Created by Shaun West on 7/15/17.
 //
 //
 
-#ifndef view_h
-#define view_h
+#ifndef screen_view_h
+#define screen_view_h
 
 #include "util/log.h"
 #include "video/video_sdl.h"
 #include "control/nes_input_manager.h"
 
-class View {
+enum ScreenAction {
+  SCREEN_ACTION_NONE,
+  SCREEN_ACTION_START
+};
+
+enum ScreenId {
+  SCREEN_TITLE
+};
+
+class ScreenView {
 public:
-  virtual int update(const NESInput &nes_input) {
+  virtual ScreenAction update(const NESInput &nes_input) {
     LOG(LOG_WARNING) << "View::update not implemented";
-    return 0;
+    return SCREEN_ACTION_NONE;
   };
   virtual void render(const VideoSDL &video) const {
     LOG(LOG_WARNING) << "View::render not implemented";
   };
 };
 
-typedef std::unique_ptr<View> UniqueView;
+typedef std::unique_ptr<ScreenView> UniqueScreenView;
 
-#endif /* screen_h */
+#endif

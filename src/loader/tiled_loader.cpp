@@ -88,6 +88,7 @@ SpriteLayer TiledLoader::get_sprite_layer(Json::Value layer_config) {
   Json::Value objects = layer_config["objects"];
   SpriteLayer new_layer;
 
+  // TODO for range
   for (int i = 0; i < objects.size(); ++i) {
     Json::Value object_config = objects[i];
     new_layer.sprites.push_back(get_sprite(object_config));
@@ -97,10 +98,11 @@ SpriteLayer TiledLoader::get_sprite_layer(Json::Value layer_config) {
 }
 
 Sprite TiledLoader::get_sprite(Json::Value sprite_config) {
-  std::string sprite_id = sprite_config["id"].asString(); // TODO NOTE need to use id instead of name in config
+  //std::string sprite_id = sprite_config["id"].asString(); // TODO NOTE need to use id instead of name in config
 
+  // TODO how do you link a sprite animation to a frameset?
   SpriteAnimation sprite_animation = {
-    sprite_id, // Is this right?
+    0, // frameset unknown currently
     "idle"
   };
 
@@ -108,12 +110,12 @@ Sprite TiledLoader::get_sprite(Json::Value sprite_config) {
   // Note: Tiled sets "y" value strangely. Need to subtract the height of the sprite
   // to get correct value
   Sprite sprite = {
-    sprite_id,
+    sprite_config["type"].asString(), // TODO add type to config
     sprite_animation,
-    IntVector2(
+    {
       sprite_config["x"].asInt(),
       sprite_config["y"].asInt() - sprite_config["height"].asInt()
-    )
+    }
   };
 
   sprite.width = sprite_config["width"].asInt();

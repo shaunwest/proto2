@@ -26,21 +26,30 @@
 #define START_NINPO 0
 #define START_ITEM  ITEM_NONE
 
+#define PLAYER_START_ANIMATION      "idle"
+#define PLAYER_START_X              0
+#define PLAYER_START_Y              0
+#define PLAYER_WIDTH                32
+#define PLAYER_HEIGHT               32
+#define FRAMESET_DEFAULT_ID         0
+#define ANIMATION_DEFAULT_DURATION  0
+#define ANIMATION_START_INDEX       0
+
 #include "video/video_sdl.h"
 #include "util/timer.h"
 #include "util/util.h"
 #include "control/nes_input_manager.h"
+#include "game/level_data.h"
+#include "game/screen_view.h"
 
 // TODO what are new C++11 best practices for enums?
-enum ViewId {
-  VIEW_TITLE,
-  VIEW_LEVEL
-};
 
+/*
 enum LevelId {
   LEVEL_NONE,
   LEVEL_1
 };
+*/
 
 enum ItemId {
   ITEM_NONE,
@@ -55,17 +64,9 @@ struct PlayerStats {
   ItemId item;
 };
 
-/*
-// TODO Move to a sprite header?
-enum SpriteDirection { DIR_RIGHT, DIR_LEFT, DIR_UP, DIR_DOWN };
-
-// TODO Move to a sprite header?
-struct SpriteData {
-  IntVector2 position;
-  IntRect hitbox; // is it always the same in NG?
-  SpriteDirection direction;
+enum ViewMode {
+  VIEW_SCREEN, VIEW_LEVEL
 };
-*/
 
 struct GameSpec {
   WindowSpec window = {
@@ -75,10 +76,29 @@ struct GameSpec {
     FULLSCREEN
   };
   NESInput input;
-  ViewId current_view_id = VIEW_TITLE;
-  LevelId current_level_id = LEVEL_NONE;
+  //LevelId current_level_id = LEVEL_NONE; // TODO move to level spec
+  ViewMode view_mode;
+  ScreenId screen_id;
   PlayerStats player_stats = {
     START_LIVES, START_SCORE, START_NINPO, START_ITEM
+  };
+  LevelSpec level_spec = {
+    LEVEL_1,
+    {},
+    {},
+    {
+      "player", // sprite type
+      {
+        FRAMESET_DEFAULT_ID,
+        PLAYER_START_ANIMATION,
+        ANIMATION_DEFAULT_DURATION,
+        ANIMATION_START_INDEX
+      },
+      { PLAYER_START_X, PLAYER_START_Y },
+      PLAYER_WIDTH,
+      PLAYER_HEIGHT,
+      DIR_RIGHT
+    }
   };
 };
 
