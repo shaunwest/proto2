@@ -30,6 +30,7 @@ int Game::start() {
   NESInputManager input_manager;
 
   // Create dispatchers
+  //UniqueScreenDispatcher screen_dispatcher = UniqueScreenDispatcher(new ScreenDispatcher(video));
   ScreenDispatcher screen_dispatcher(video);
   LevelDispatcher level_dispatcher(video);
 
@@ -68,6 +69,8 @@ int Game::start() {
       }
 
       // UPDATE
+      // TODO: make all levels and screens derive from single View class. Pass full GameSpec to 
+      // update and render (and create?)
       switch (game_spec.view_mode) {
         case VIEW_SCREEN: {
           ScreenDispatch dispatch = screen_dispatcher.update(game_spec.screen_id, game_spec.input);

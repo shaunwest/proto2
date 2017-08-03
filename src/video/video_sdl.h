@@ -61,7 +61,9 @@ public:
   void init_window(const WindowSpec &window_spec);
   int create_image(std::string image_path);
   void create_image(int image_id, SDL_Surface *surface);
+  UniqueTexture create_image2(std::string image_path);
   void recreate_images();
+  void clear_images();
   UniqueWindow create_window(const WindowSpec &window_spec) const;
   UniqueRenderer create_renderer(SDL_Window * window) const;
   void render_begin() const;
@@ -72,8 +74,9 @@ public:
   void render_image(int image_id, IntRect src, IntRect dest) const;
   void render_string(std::string str, IntVector2 position) const;
   void get_display_mode();
-private:
   UniqueRenderer renderer;
+private:
+  //UniqueRenderer renderer;
   UniqueWindow window;
   FontTTF font;
   std::map<int, UniqueSurface> surfaces;

@@ -33,6 +33,14 @@ public:
   };
 };
 
-typedef std::unique_ptr<ScreenView> UniqueScreenView;
+/*
+struct Deleter2
+{
+  void operator()(ScreenView *p) const {
+    LOG(LOG_INFO) << "Screen View deleted";
+  }
+};
 
+typedef std::unique_ptr<ScreenView, Deleter2> UniqueScreenView;
+*/
 #endif

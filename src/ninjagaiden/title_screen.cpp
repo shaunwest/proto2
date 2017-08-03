@@ -8,10 +8,9 @@
 
 #include "title_screen.h"
 
-#define TITLE_IMAGE "assets/sprites/title.png"
-
 TitleScreen::TitleScreen(VideoSDL &video) {
-  titleImageId = video.create_image(TITLE_IMAGE);
+  //titleImageId = video.create_image("assets/sprites/title.png");
+  backgroundImage = video.create_image2("assets/sprites/title.png");
 }
 
 ScreenAction TitleScreen::update(const NESInput &nes_input) {
@@ -23,5 +22,6 @@ ScreenAction TitleScreen::update(const NESInput &nes_input) {
 }
 
 void TitleScreen::render(const VideoSDL &video) const {
-  video.render_image(titleImageId);
+  //video.render_image(titleImageId);
+  video.render_texture(backgroundImage.get());
 }

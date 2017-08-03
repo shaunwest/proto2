@@ -28,8 +28,21 @@ public:
   // TODO can video be const? render?
   void render(ScreenId screen_id);
 private:
-  UniqueScreenView screen_view;
+  //UniqueScreenView screen_view;
+  //ScreenView screen_view;
+  UniqueTitleScreen screen_view;
   VideoSDL &video;
 };
+
+/*
+struct Deleter3
+{
+  void operator()(ScreenDispatcher *p) const {
+    LOG(LOG_INFO) << "Screen Dispatcher deleted";
+  }
+};
+
+typedef std::unique_ptr<ScreenDispatcher, Deleter3> UniqueScreenDispatcher;
+*/
 
 #endif

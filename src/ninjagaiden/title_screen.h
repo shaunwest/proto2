@@ -25,8 +25,17 @@ public:
   void render(const VideoSDL &video) const;
 private:
   int titleImageId;
+  UniqueTexture backgroundImage;
 };
 
-typedef std::unique_ptr<TitleScreen> UniqueTitleScreen;
+struct Deleter
+{
+  void operator()(TitleScreen *p) const {
+    delete p;
+    LOG(LOG_INFO) << "Title Screen deleted";
+  }
+};
+
+typedef std::unique_ptr<TitleScreen, Deleter> UniqueTitleScreen;
 
 #endif /* title_screen_h */

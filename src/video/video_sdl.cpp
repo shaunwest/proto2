@@ -103,15 +103,12 @@ UniqueRenderer VideoSDL::create_renderer(SDL_Window * window) const {
   return new_renderer;
 }
 
-// TODO this needs to save the path as well, so if called again with the same
-// path, it won't be loaded from disk again
 int VideoSDL::create_image(std::string image_path) {
-  std::string full_image_path = image_path;
   image_id++;
-  surfaces[image_id] = UniqueSurface(IMG_Load(full_image_path.c_str()));
+  surfaces[image_id] = UniqueSurface(IMG_Load(image_path.c_str()));
 
   if (surfaces[image_id] == nullptr) {
-    LOG(LOG_ERROR) << "Image not found: " << full_image_path;
+    LOG(LOG_ERROR) << "Image not found: " << image_path;
   }
   else {
     images[image_id] = UniqueTexture(SDL_CreateTextureFromSurface(
@@ -122,6 +119,24 @@ int VideoSDL::create_image(std::string image_path) {
 
   return image_id;
 }
+
+UniqueTexture VideoSDL::create_image2(std::string image_path) {
+  UniqueSurface surface = UniqueSurface(IMG_Load(image_path.c_str()));
+
+  if (surface == nullptr) {
+    LOG(LOG_ERROR) << "Error loading surface " << SDL_GetError();
+    return nullptr;
+  }
+
+  // TODO should check if image was created
+  UniqueTexture texture = UniqueTexture(SDL_CreateTextureFromSurface(
+    renderer.get(),
+    surface.get())
+  );
+
+  return texture;
+}
+
 
 void VideoSDL::create_image(int image_id, SDL_Surface *surface) {
   images[image_id] = UniqueTexture(SDL_CreateTextureFromSurface(
@@ -136,6 +151,11 @@ void VideoSDL::recreate_images() {
   for (auto const &kv : surfaces) {
     create_image(kv.first, kv.second.get());
   }
+}
+
+void VideoSDL::clear_images() {
+  surfaces.clear();
+  images.clear();
 }
 
 // Must be called before rendering
