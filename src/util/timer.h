@@ -25,7 +25,7 @@ public:
   GameTimer();
   GameTimer(Time t);
   bool do_updates();
-  Time * get_time();
+  Time &get_time();
   float get_total_time();
   std::ostringstream print_time();
 

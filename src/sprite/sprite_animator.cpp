@@ -10,7 +10,7 @@
 
 SpriteAnimator::SpriteAnimator() {}
 
-int SpriteAnimator::update(SpriteAnimation &sprite_animation, SpriteFrameset &frameset, float elapsed) {
+void SpriteAnimator::update(SpriteAnimation &sprite_animation, SpriteFrameset &frameset, float elapsed) {
   std::string sequence_name = sprite_animation.current_sequence;
 
   if (frameset.frames.count(sequence_name) == 0) {
@@ -37,8 +37,4 @@ int SpriteAnimator::update(SpriteAnimation &sprite_animation, SpriteFrameset &fr
   }
 
   sprite_animation.duration_count += (elapsed * 1000);
-
-  return 0;
 }
-
-void SpriteAnimator::render(const VideoSDL &video) const {}

@@ -118,8 +118,8 @@ Sprite TiledLoader::get_sprite(Json::Value sprite_config) {
     }
   };
 
-  sprite.width = sprite_config["width"].asInt();
-  sprite.height = sprite_config["height"].asInt();
+  sprite.size.width = sprite_config["width"].asInt();
+  sprite.size.height = sprite_config["height"].asInt();
 
   //sprite.frameset_id = sprite_config["name"].asString();
 

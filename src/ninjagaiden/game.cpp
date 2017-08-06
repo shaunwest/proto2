@@ -9,12 +9,12 @@
 #include "game.h"
 
 #include "level.h"
-
 #include "util/log.h"
-#include "game/level_view.h"
 #include "game/screen_view.h"
-#include "screen_dispatcher.h"
-#include "level_dispatcher.h"
+#include "title_screen.h"
+#include "level_screen.h"
+#include "loader/tiled_loader.h"
+#include "loader/aseprite_loader.h"
 
 LogLevel Logger::reportingLevel = LOG_DEBUG;
 
@@ -29,10 +29,17 @@ int Game::start() {
   // Init input
   NESInputManager input_manager;
 
-  // Create dispatchers
-  //UniqueScreenDispatcher screen_dispatcher = UniqueScreenDispatcher(new ScreenDispatcher(video));
-  ScreenDispatcher screen_dispatcher(video);
-  LevelDispatcher level_dispatcher(video);
+  // Create our asset loaders
+  TiledLoader level_loader;
+  AsepriteLoader sprite_loader;
+
+  // This will point to the current screen/
+  // Also, set view mode to the title screen
+  UScreenView view;
+  game_spec.view_mode = MODE_LOAD_TITLE;
+
+  // Load some initial assets
+  game_spec.level_spec.player_frameset = sprite_loader.load("assets/sprites/ryu.json", video);
 
   // Main game loop
   bool quit = false;
@@ -54,10 +61,14 @@ int Game::start() {
         }
       }
 
+      // UPDATE
+
+      // Check input
       input_manager.update(game_spec.input);
 
-      // Hit ESC to quit, F to toggle fullscreen
       NESInput input_action = game_spec.input;
+
+      // Hit ESC to quit, F to toggle fullscreen
       if (input_action.esc) {
         LOG(LOG_INFO) << "ESC was pressed";
         quit = true;
@@ -68,52 +79,29 @@ int Game::start() {
         video.init_window(game_spec.window);
       }
 
-      // UPDATE
-      // TODO: make all levels and screens derive from single View class. Pass full GameSpec to 
-      // update and render (and create?)
+      // Handle view modes
       switch (game_spec.view_mode) {
-        case VIEW_SCREEN: {
-          ScreenDispatch dispatch = screen_dispatcher.update(game_spec.screen_id, game_spec.input);
-
-          switch (dispatch) {
-            case SCREEN_DISPATCH_START_GAME:
-              game_spec.view_mode = VIEW_LEVEL;
-              game_spec.level_spec.level_id = LEVEL_1;
-              break;
-            case SCREEN_DISPATCH_NONE:
-              break;
-          }
-
+        case MODE_LOAD_TITLE:
+          view = UTitleScreen(new TitleScreen(game_spec, video));
+          game_spec.view_mode = MODE_UPDATE;
           break;
-        }
-        case VIEW_LEVEL: {
-          LevelDispatch dispatch = level_dispatcher.update(game_spec.level_spec, game_spec.input);
-
-          switch (dispatch) {
-            case LEVEL_DISPATCH_NONE:
-              break;
-          }
-
+        case MODE_LOAD_LEVEL_1:
+          game_spec.level_spec.layers = level_loader.load("levels/level1_1.json");
+          view = ULevelScreen(new LevelScreen(game_spec, video));
+          game_spec.view_mode = MODE_UPDATE;
           break;
-        }
+        case MODE_UPDATE:
+          view->update(game_spec, timer.get_time().elapsed);
+          break;
       }
     }
 
     // RENDER when a full frame has passed
     if (render) {
       video.render_begin();
-
-      switch(game_spec.view_mode) {
-        case VIEW_SCREEN:
-          screen_dispatcher.render(game_spec.screen_id);
-          break;
-        case VIEW_LEVEL:
-          level_dispatcher.render(game_spec.level_spec);
-          break;
-      }
-
+      view->render(game_spec);
       //renderer.render_string() << timer.print_time().str();
-      video.render_string("FPS: " + std::to_string(timer.get_time()->fps), IntVector2{0, 0});
+      video.render_string("FPS: " + std::to_string(timer.get_time().fps), IntVector2{0, 0});
       video.render_end();
     }
   }

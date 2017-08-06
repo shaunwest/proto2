@@ -11,36 +11,29 @@
 
 #include "util/log.h"
 #include "video/video_sdl.h"
-#include "control/nes_input_manager.h"
-
-enum ScreenAction {
-  SCREEN_ACTION_NONE,
-  SCREEN_ACTION_START
-};
-
-enum ScreenId {
-  SCREEN_TITLE
-};
+#include "game_data.h"
 
 class ScreenView {
 public:
-  virtual ScreenAction update(const NESInput &nes_input) {
+  virtual void update(GameSpec &game_spec, float elapsed) {
     LOG(LOG_WARNING) << "View::update not implemented";
-    return SCREEN_ACTION_NONE;
   };
-  virtual void render(const VideoSDL &video) const {
+  virtual void render(const GameSpec &game_spec) const {
     LOG(LOG_WARNING) << "View::render not implemented";
+  };
+  virtual ~ScreenView() {
+    LOG(LOG_DEBUG) << "View::~ScreenView called";
   };
 };
 
-/*
-struct Deleter2
+struct ScreenViewDeleter
 {
   void operator()(ScreenView *p) const {
+    delete p;
     LOG(LOG_INFO) << "Screen View deleted";
   }
 };
 
-typedef std::unique_ptr<ScreenView, Deleter2> UniqueScreenView;
-*/
+typedef std::unique_ptr<ScreenView, ScreenViewDeleter> UScreenView;
+
 #endif

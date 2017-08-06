@@ -9,7 +9,7 @@
 #ifndef player_h
 #define player_h
 
-#include "loader/aseprite_loader.h"
+//#include "loader/aseprite_loader.h"
 #include "video/video_sdl.h"
 #include "sprite/sprite_animator.h"
 #include "game/level_data.h"
@@ -18,8 +18,13 @@ class Player
 {
 public:
   Player();
-  int update(Sprite &player_data, float elapsed);
-  void render(const Sprite &player_data, SpriteFrameset &frameset, const VideoSDL &video) const;
+  Player(SpriteFrameset &frameset, VideoSDL &video);
+  void update(Sprite &player_spec, SpriteFrameset &frameset, float elapsed);
+  void render(const Sprite &player_spec, const SpriteFrameset &frameset) const;
+private:
+  UniqueTexture playerImage;
+  VideoSDL &video;
+  SpriteAnimator animator;
 };
 
 #endif

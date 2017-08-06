@@ -16,8 +16,7 @@ class SpriteAnimator
 {
 public:
   SpriteAnimator();
-  int update(SpriteAnimation &sprite_animation, SpriteFrameset &frameset, float elapsed);
-  void render(const VideoSDL &video) const;
+  void update(SpriteAnimation &sprite_animation, SpriteFrameset &frameset, float elapsed);
 };
 
 #endif

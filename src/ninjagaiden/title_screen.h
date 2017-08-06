@@ -13,6 +13,7 @@
 #include "control/nes_input_manager.h"
 #include "util/util.h"
 #include "game/screen_view.h"
+#include "game/game_data.h"
 
 enum TitleAction {
   TITLE_ACTION_NONE, TITLE_ACTION_START
@@ -20,22 +21,15 @@ enum TitleAction {
 
 class TitleScreen : public ScreenView {
 public:
-  TitleScreen(VideoSDL &video);
-  ScreenAction update(const NESInput &nes_input);
-  void render(const VideoSDL &video) const;
+  TitleScreen(GameSpec &game_spec, VideoSDL &video);
+  void update(GameSpec &game_spec, float elapsed);
+  void render(const GameSpec &game_spec) const;
 private:
-  int titleImageId;
+  VideoSDL &video;
+  //int titleImageId;
   UniqueTexture backgroundImage;
 };
 
-struct Deleter
-{
-  void operator()(TitleScreen *p) const {
-    delete p;
-    LOG(LOG_INFO) << "Title Screen deleted";
-  }
-};
+typedef std::unique_ptr<TitleScreen, ScreenViewDeleter> UTitleScreen;
 
-typedef std::unique_ptr<TitleScreen, Deleter> UniqueTitleScreen;
-
-#endif /* title_screen_h */
+#endif

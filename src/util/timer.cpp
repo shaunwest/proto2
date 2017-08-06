@@ -37,8 +37,8 @@ bool GameTimer::do_updates() {
   return frame_ready;
 }
 
-Time * GameTimer::get_time() {
-  return &time;
+Time &GameTimer::get_time() {
+  return time;
 }
 
 float GameTimer::get_total_time() {

@@ -14,20 +14,21 @@
 #include "player.h"
 
 #include "json/json.h"
-#include "game/level_view.h"
+#include "control/nes_input_manager.h"
 #include "game/level_data.h"
 #include "video/video_sdl.h"
 
-class Level : public LevelView
+class Level
 {
 public:
   Level(LevelSpec &level_spec, VideoSDL &video);
-  LevelAction update(const NESInput &nes_input);
-  void render(LevelSpec &level_spec, const VideoSDL &video) const;
+  void update(LevelSpec &level_spec, const NESInput &nes_input, float elapsed);
+  void render(const LevelSpec &level_spec) const;
 private:
   Layers layers;
   Player player;
-  int backgroundImageId;
+  UniqueTexture backgroundImage;
+  VideoSDL &video;
 };
 
 typedef std::unique_ptr<Level> UniqueLevel;

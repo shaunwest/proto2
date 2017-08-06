@@ -61,7 +61,8 @@ struct SpriteFrame {
 typedef std::map<std::string, std::vector<SpriteFrame>> FrameMap;
 
 struct SpriteFrameset {
-  int image_id;
+  //int image_id;
+  std::string image_path;
   int sprite_width;
   int sprite_height;
   //std::string current_sequence; // What?
@@ -85,8 +86,7 @@ struct Sprite {
   std::string type;
   SpriteAnimation animation;
   IntVector2 position;
-  int width; // TODO use Size
-  int height;
+  Size size;
   SpriteDirection dir;
   IntRect hitbox;
   PhysicsState physics;
@@ -109,10 +109,8 @@ struct Layers {
   BackgroundLayer background_layer;
 };
 
-enum LevelId { LEVEL_1 };
-
 struct LevelSpec {
-  LevelId level_id;
+  SpriteFrameset player_frameset;
   SpriteFramesets sprite_framesets;
   Layers layers;
   Sprite player;
