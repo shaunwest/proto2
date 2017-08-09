@@ -15,7 +15,6 @@
 
 #include "json/json.h"
 #include "control/nes_input_manager.h"
-#include "game/level_data.h"
 #include "video/video_sdl.h"
 
 class Level
@@ -33,4 +32,4 @@ private:
 
 typedef std::unique_ptr<Level> UniqueLevel;
 
-#endif /* level_h */
+#endif

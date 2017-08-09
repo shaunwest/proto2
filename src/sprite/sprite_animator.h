@@ -10,7 +10,8 @@
 #define sprite_animator_h
 
 #include "video/video_sdl.h"
-#include "game/level_data.h"
+//#include "game/level_data.h"
+#include "ninjagaiden/spec.h"
 
 class SpriteAnimator
 {

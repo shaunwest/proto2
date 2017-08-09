@@ -10,7 +10,7 @@
 
 #include "level.h"
 #include "util/log.h"
-#include "game/screen_view.h"
+#include "screen_view.h"
 #include "title_screen.h"
 #include "level_screen.h"
 #include "loader/tiled_loader.h"

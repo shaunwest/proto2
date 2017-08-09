@@ -10,8 +10,6 @@
 
 // Initialize all of the important SDL stuff
 VideoSDL::VideoSDL(const WindowSpec &window_spec) {
-  image_id = 0;
-
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     LOG(LOG_ERROR) << "Failed to init SDL";
     return;
@@ -53,10 +51,6 @@ void VideoSDL::init_window(const WindowSpec &window_spec) {
     window_spec.resolution.width,
     window_spec.resolution.height
   );
-
-  if (images.size() > 0) {
-    recreate_images();
-  }
 
   LOG(LOG_INFO) << "Video initialized";
 }
@@ -103,24 +97,7 @@ UniqueRenderer VideoSDL::create_renderer(SDL_Window * window) const {
   return new_renderer;
 }
 
-int VideoSDL::create_image(std::string image_path) {
-  image_id++;
-  surfaces[image_id] = UniqueSurface(IMG_Load(image_path.c_str()));
-
-  if (surfaces[image_id] == nullptr) {
-    LOG(LOG_ERROR) << "Image not found: " << image_path;
-  }
-  else {
-    images[image_id] = UniqueTexture(SDL_CreateTextureFromSurface(
-      renderer.get(),
-      surfaces[image_id].get())
-    );
-  }
-
-  return image_id;
-}
-
-UniqueTexture VideoSDL::create_image2(std::string image_path) {
+UniqueTexture VideoSDL::create_image(std::string image_path) {
   UniqueSurface surface = UniqueSurface(IMG_Load(image_path.c_str()));
 
   if (surface == nullptr) {
@@ -135,27 +112,6 @@ UniqueTexture VideoSDL::create_image2(std::string image_path) {
   );
 
   return texture;
-}
-
-
-void VideoSDL::create_image(int image_id, SDL_Surface *surface) {
-  images[image_id] = UniqueTexture(SDL_CreateTextureFromSurface(
-    renderer.get(),
-    surfaces[image_id].get())
-  );
-}
-
-// Create images from all stored surfaces
-// Note: surfaces are stored in regular RAM and textures in VRAM
-void VideoSDL::recreate_images() {
-  for (auto const &kv : surfaces) {
-    create_image(kv.first, kv.second.get());
-  }
-}
-
-void VideoSDL::clear_images() {
-  surfaces.clear();
-  images.clear();
 }
 
 // Must be called before rendering
@@ -186,14 +142,6 @@ void VideoSDL::render_texture(SDL_Texture *texture, IntRect src, IntRect dest) c
   SDL_Rect src_rect = {src.x, src.y, src.width, src.height};
   SDL_Rect dest_rect = {dest.x, dest.y, dest.width, dest.height};
   SDL_RenderCopy(renderer.get(), texture, &src_rect, &dest_rect);
-}
-
-void VideoSDL::render_image(int image_id) const {
-  render_texture(images.at(image_id).get());
-}
-
-void VideoSDL::render_image(int image_id, IntRect src, IntRect dest) const {
-  render_texture(images.at(image_id).get(), src, dest);
 }
 
 // TODO not sure if this is really necessary

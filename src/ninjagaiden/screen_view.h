@@ -11,7 +11,8 @@
 
 #include "util/log.h"
 #include "video/video_sdl.h"
-#include "game_data.h"
+//#include "game_data.h"
+#include "spec.h"
 
 class ScreenView {
 public:

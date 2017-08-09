@@ -11,7 +11,7 @@
 #define LEVELS_BASE_PATH "assets/levels/"
 
 Level::Level(LevelSpec &level_spec, VideoSDL &video) : video(video), player(level_spec.player_frameset, video) {
-  backgroundImage = video.create_image2(LEVELS_BASE_PATH + level_spec.layers.background_layer.image_name);
+  backgroundImage = video.create_image(LEVELS_BASE_PATH + level_spec.layers.background_layer.image_name);
 
   // TODO enemy objects will represent what's actually getting rendered on screen or is about to be.
   // So all enemy data objects will be loaded at the start, but only visible enemies will have active objects.
@@ -21,13 +21,26 @@ void Level::update(LevelSpec &level_spec, const NESInput &nes_input, float elaps
   player.update(
       level_spec.player,
       level_spec.player_frameset,
+      nes_input,
       elapsed
   );
 }
 
 void Level::render(const LevelSpec &level_spec) const {
-  IntRect src(0, 0, 256, 176);
-  IntRect dest(0, 64, 256, 176);
+  IntRect src(
+      level_spec.camera.position.x,
+      level_spec.camera.position.y,
+      level_spec.camera.viewport.width,
+      level_spec.camera.viewport.height
+  );
+
+  IntRect dest(
+      0,
+      64,
+      level_spec.camera.viewport.width,
+      level_spec.camera.viewport.height
+  );
+
   video.render_texture(backgroundImage.get(), src, dest);
 
   player.render(

@@ -12,12 +12,9 @@
 #include "video/video_sdl.h"
 #include "control/nes_input_manager.h"
 #include "util/util.h"
-#include "game/screen_view.h"
-#include "game/game_data.h"
-
-enum TitleAction {
-  TITLE_ACTION_NONE, TITLE_ACTION_START
-};
+#include "screen_view.h"
+//#include "game/game_data.h"
+#include "spec.h"
 
 class TitleScreen : public ScreenView {
 public:
@@ -26,7 +23,6 @@ public:
   void render(const GameSpec &game_spec) const;
 private:
   VideoSDL &video;
-  //int titleImageId;
   UniqueTexture backgroundImage;
 };
 

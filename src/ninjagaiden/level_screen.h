@@ -9,7 +9,7 @@
 #ifndef level_screen_h
 #define level_screen_h
 
-#include "game/screen_view.h"
+#include "screen_view.h"
 #include "video/video_sdl.h"
 #include "level.h"
 

@@ -59,29 +59,19 @@ public:
   VideoSDL(const WindowSpec &window_spec);
   ~VideoSDL();
   void init_window(const WindowSpec &window_spec);
-  int create_image(std::string image_path);
-  void create_image(int image_id, SDL_Surface *surface);
-  UniqueTexture create_image2(std::string image_path);
-  void recreate_images();
-  void clear_images();
+  UniqueTexture create_image(std::string image_path);
   UniqueWindow create_window(const WindowSpec &window_spec) const;
   UniqueRenderer create_renderer(SDL_Window * window) const;
   void render_begin() const;
   void render_end() const;
   void render_texture(SDL_Texture *texture) const;
   void render_texture(SDL_Texture *texture, IntRect src, IntRect dest) const;
-  void render_image(int image_id) const;
-  void render_image(int image_id, IntRect src, IntRect dest) const;
   void render_string(std::string str, IntVector2 position) const;
   void get_display_mode();
-  UniqueRenderer renderer;
 private:
-  //UniqueRenderer renderer;
+  UniqueRenderer renderer;
   UniqueWindow window;
   FontTTF font;
-  std::map<int, UniqueSurface> surfaces;
-  std::map<int, UniqueTexture> images;
-  int image_id;
 };
 
 #endif /* video_sdl_h */

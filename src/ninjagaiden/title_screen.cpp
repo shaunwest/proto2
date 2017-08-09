@@ -9,7 +9,7 @@
 #include "title_screen.h"
 
 TitleScreen::TitleScreen(GameSpec &game_spec, VideoSDL &video) : video(video) {
-  backgroundImage = video.create_image2("assets/sprites/title.png");
+  backgroundImage = video.create_image("assets/sprites/title.png");
 }
 
 void TitleScreen::update(GameSpec &game_spec, float elapsed) {
