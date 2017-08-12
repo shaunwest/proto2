@@ -70,12 +70,11 @@ Vector2<T> operator* (const Vector2<T> &lhs, T rhs) {
   return Vector2<T>(lhs * rhs.x, lhs * rhs.y);
 }
 
-typedef Vector2<int> IntVector2; // TODO rename to Vector2i
-typedef Vector2<float> FloatVector2; // TODO drop this
+typedef Vector2<int> Vector2i;
 typedef Vector2<float> Vector2f;
 
-typedef std::vector<IntVector2> IntVectorList;
-typedef std::vector<FloatVector2> FloatVectorList;
+typedef std::vector<Vector2i> IntVectorList;
+typedef std::vector<Vector2f> FloatVectorList;
 
 // RECT
 template <typename T>

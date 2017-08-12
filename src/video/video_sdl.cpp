@@ -124,7 +124,7 @@ void VideoSDL::render_end() const {
   SDL_RenderPresent(renderer.get());
 }
 
-void VideoSDL::render_string(std::string str, IntVector2 position) const {
+void VideoSDL::render_string(std::string str, Vector2i position) const {
   SDL_Surface* stats_surface = font.get_font(str.c_str());
   SDL_Texture* stats_texture = SDL_CreateTextureFromSurface(renderer.get(), stats_surface);
   SDL_Rect rect = { position.x, position.y, 0, 0 };

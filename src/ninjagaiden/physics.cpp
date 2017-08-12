@@ -75,7 +75,7 @@ Vector2f Physics::halt(const Vector2f &vel, const Vector2f &min) {
 
 // Keep velocity from increasing beyond a given maximum
 Vector2f Physics::clamp(const Vector2f &vel, const PhysicsAttributes &attrs) {
-  FloatVector2 new_velocity;
+  Vector2f new_velocity;
 
   new_velocity.x = (vel.x > 0) ?
     fmin(vel.x, attrs.move_max_speed) : fmax(vel.x, -attrs.move_max_speed);

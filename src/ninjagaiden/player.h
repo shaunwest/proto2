@@ -22,7 +22,7 @@ public:
   void update(Sprite &player, SpriteFrameset &frameset, const NESInput &input, float elapsed);
   void render(const Sprite &player, const SpriteFrameset &frameset) const;
 private:
-  void update_movement(PhysicsSpec &physics, const IntVector2 position, const NESInput &input);
+  void update_movement(PhysicsSpec &physics, const Vector2i position, const NESInput &input);
   void update_jump(PhysicsSpec &physics, PhysicsFlags &flags, const NESInput &input);
   UniqueTexture playerImage;
   VideoSDL &video;

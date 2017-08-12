@@ -25,7 +25,7 @@ void Player::update(Sprite &player, SpriteFrameset &frameset, const NESInput &in
   player.physics.velocity = Physics::move(player.physics, elapsed);
 
   // Set position
-  player.position = IntVector2(
+  player.position = Vector2i(
     player.position.x + round(player.physics.velocity.x),
     player.position.y + round(player.physics.velocity.y)
   );
@@ -46,7 +46,7 @@ void Player::update(Sprite &player, SpriteFrameset &frameset, const NESInput &in
   animator.update(player.animation, frameset, elapsed);
 }
 
-void Player::update_movement(PhysicsSpec &physics, const IntVector2 position, const NESInput &input) {
+void Player::update_movement(PhysicsSpec &physics, const Vector2i position, const NESInput &input) {
   constexpr int move_delta = 125;
 
   // Check input and apply acceleration

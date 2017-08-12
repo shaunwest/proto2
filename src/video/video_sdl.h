@@ -66,7 +66,7 @@ public:
   void render_end() const;
   void render_texture(SDL_Texture *texture) const;
   void render_texture(SDL_Texture *texture, IntRect src, IntRect dest, bool flip = false) const;
-  void render_string(std::string str, IntVector2 position) const;
+  void render_string(std::string str, Vector2i position) const;
   void get_display_mode();
 private:
   UniqueRenderer renderer;

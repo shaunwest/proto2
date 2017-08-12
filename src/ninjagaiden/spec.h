@@ -29,8 +29,8 @@ struct PhysicsAttributes {
 };
 
 struct PhysicsSpec {
-  FloatVector2 velocity;
-  FloatVector2 acceleration;
+  Vector2f velocity;
+  Vector2f acceleration;
   PhysicsAttributes attrs;
 };
 
@@ -72,7 +72,7 @@ enum SpriteAi { AI_NONE, AI_BASIC };
 struct Sprite {
   std::string type;
   SpriteAnimation animation;
-  IntVector2 position;
+  Vector2i position;
   Size size;
   SpriteDirection dir;
   IntRect hitbox;
@@ -97,7 +97,7 @@ struct Layers {
 };
 
 struct CameraSpec {
-  IntVector2 position;
+  Vector2i position;
   Size viewport;
 };
 
