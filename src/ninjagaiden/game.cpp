@@ -102,6 +102,7 @@ int Game::start() {
       view->render(game_spec);
       //renderer.render_string() << timer.print_time().str();
       video.render_string("FPS: " + std::to_string(timer.get_time().fps), Vector2i{0, 0});
+      video.render_string("CAM: " + std::to_string(game_spec.level_spec.camera.position.x), Vector2i{0, 20});
       //std::cout << timer.get_time().elapsed << std::endl;
       video.render_end();
     }

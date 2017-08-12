@@ -9,10 +9,12 @@
 #ifndef camera_h
 #define camera_h
 
+#include "spec.h"
+
 class Camera
 {
 public:
-  Camera();
+  void update(CameraSpec &camera, const Sprite &player);
 };
 
 #endif

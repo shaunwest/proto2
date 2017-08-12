@@ -11,7 +11,6 @@
 
 #include <iostream>
 
-//#include "game/level_data.h"
 #include "ninjagaiden/spec.h"
 #include "json/json.h"
 

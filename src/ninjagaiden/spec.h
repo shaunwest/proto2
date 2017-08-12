@@ -14,7 +14,7 @@
 #include <map>
 
 #include "ninjagaiden/game_config.h"
-#include "util/util.h"
+#include "util/geom.h"
 #include "video/video_sdl.h"
 #include "control/nes_input_manager.h"
 #include "loader/aseprite_loader.h"
@@ -47,7 +47,7 @@ enum CollisionType {
 };
 
 struct CollisionBox {
-  IntRect rect;
+  Recti rect;
   CollisionType type;
 };
 
@@ -75,7 +75,7 @@ struct Sprite {
   Vector2i position;
   Size size;
   SpriteDirection dir;
-  IntRect hitbox;
+  Recti hitbox;
   PhysicsSpec physics;
   PhysicsFlags flags;
 };

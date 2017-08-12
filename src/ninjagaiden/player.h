@@ -20,7 +20,7 @@ public:
   Player();
   Player(SpriteFrameset &frameset, VideoSDL &video);
   void update(Sprite &player, SpriteFrameset &frameset, const NESInput &input, float elapsed);
-  void render(const Sprite &player, const SpriteFrameset &frameset) const;
+  void render(const Sprite &player, const SpriteFrameset &frameset, const CameraSpec &camera) const;
 private:
   void update_movement(PhysicsSpec &physics, const Vector2i position, const NESInput &input);
   void update_jump(PhysicsSpec &physics, PhysicsFlags &flags, const NESInput &input);

@@ -16,7 +16,7 @@
 #include "SDL_image.h"
 #include "SDL_ttf.h"
 
-#include "util/util.h"
+#include "util/geom.h"
 #include "util/log.h"
 #include "font_ttf.h"
 
@@ -65,7 +65,7 @@ public:
   void render_begin() const;
   void render_end() const;
   void render_texture(SDL_Texture *texture) const;
-  void render_texture(SDL_Texture *texture, IntRect src, IntRect dest, bool flip = false) const;
+  void render_texture(SDL_Texture *texture, Recti src, Recti dest, bool flip = false) const;
   void render_string(std::string str, Vector2i position) const;
   void get_display_mode();
 private:

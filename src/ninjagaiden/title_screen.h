@@ -11,9 +11,8 @@
 
 #include "video/video_sdl.h"
 #include "control/nes_input_manager.h"
-#include "util/util.h"
+#include "util/geom.h"
 #include "screen_view.h"
-//#include "game/game_data.h"
 #include "spec.h"
 
 class TitleScreen : public ScreenView {

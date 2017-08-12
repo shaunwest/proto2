@@ -19,7 +19,7 @@
 
 #define PLAYER_START_ANIMATION      "idle"
 #define PLAYER_START_X              0
-#define PLAYER_START_Y              192
+#define PLAYER_START_Y              186
 #define PLAYER_WIDTH                32
 #define PLAYER_HEIGHT               32
 #define FRAMESET_DEFAULT_ID         0

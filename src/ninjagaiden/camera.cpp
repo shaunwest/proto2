@@ -8,4 +8,14 @@
 
 #include "camera.h"
 
-Camera::Camera() {}
+void Camera::update(CameraSpec &camera, const Sprite &sprite) {
+  if ((sprite.position.x < 3200 &&
+        sprite.physics.velocity.x > 0 &&
+        (sprite.position.x - camera.position.x) > 128) ||
+    (sprite.position.x > 128 &&
+     sprite.physics.velocity.x < 0 &&
+        (sprite.position.x - camera.position.x) < 128))
+  {
+    camera.position.x += sprite.physics.velocity.x;
+  }
+}

@@ -10,7 +10,7 @@
 
 #include "player.h"
 
-#include "util/util.h"
+#include "util/geom.h"
 #include "physics.h"
 
 Player::Player(SpriteFrameset &frameset, VideoSDL &video) : video(video) {
@@ -76,13 +76,13 @@ void Player::update_jump(PhysicsSpec &physics, PhysicsFlags &flags, const NESInp
   }
 }
 
-void Player::render(const Sprite &player, const SpriteFrameset &frameset) const {
+void Player::render(const Sprite &player, const SpriteFrameset &frameset, const CameraSpec &camera) const {
   SpriteFrame frame = frameset.frames.at(
       player.animation.current_sequence)[player.animation.current_sequence_index];
 
-  IntRect rsrc(frame.atlas_x, frame.atlas_y, player.size.width, player.size.height);
-  IntRect rdest(
-    player.position.x, player.position.y,
+  Recti rsrc(frame.atlas_x, frame.atlas_y, player.size.width, player.size.height);
+  Recti rdest(
+    player.position.x - camera.position.x, player.position.y - camera.position.y,
     player.size.width, player.size.height
   );
 

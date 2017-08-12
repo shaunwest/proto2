@@ -8,8 +8,9 @@
 
 #include "tiled_loader.h"
 
-#include "util/util.h"
+#include "util/geom.h"
 #include "util/log.h"
+#include "util/util.h"
 
 #define PROPERTIES_KEY "properties"
 #define SUBTYPE_KEY "subtype"
@@ -71,7 +72,7 @@ CollisionLayer TiledLoader::get_collision_layer(Json::Value layer_config) {
 
 // Get a Rect representing a collision box from the provided JSON config
 CollisionBox TiledLoader::get_collision_box(Json::Value box_config) {
-  IntRect rect(
+  Recti rect(
     box_config["x"].asInt(),
     box_config["y"].asInt(),
     box_config["width"].asInt(),

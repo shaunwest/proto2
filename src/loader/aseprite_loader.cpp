@@ -8,6 +8,8 @@
 
 #include "aseprite_loader.h"
 
+#include "util/util.h"
+
 AsepriteLoader::AsepriteLoader() {}
 
 SpriteFrameset AsepriteLoader::load(std::string json_path, VideoSDL &video) {

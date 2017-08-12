@@ -12,8 +12,8 @@
 #include <iostream>
 
 #include "player.h"
-
-#include "json/json.h"
+#include "camera.h"
+//#include "json/json.h"
 #include "control/nes_input_manager.h"
 #include "video/video_sdl.h"
 
@@ -28,8 +28,9 @@ private:
   Player player;
   UniqueTexture backgroundImage;
   VideoSDL &video;
+  Camera camera;
 };
 
-typedef std::unique_ptr<Level> UniqueLevel;
+//typedef std::unique_ptr<Level> UniqueLevel;
 
 #endif
