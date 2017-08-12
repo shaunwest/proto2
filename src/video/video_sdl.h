@@ -65,7 +65,7 @@ public:
   void render_begin() const;
   void render_end() const;
   void render_texture(SDL_Texture *texture) const;
-  void render_texture(SDL_Texture *texture, IntRect src, IntRect dest) const;
+  void render_texture(SDL_Texture *texture, IntRect src, IntRect dest, bool flip = false) const;
   void render_string(std::string str, IntVector2 position) const;
   void get_display_mode();
 private:

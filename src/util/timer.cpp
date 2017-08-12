@@ -21,15 +21,17 @@ GameTimer::GameTimer(Time t) {
 // If time passed is >= target frame time, allow a frame (return true)
 bool GameTimer::do_updates() {
   if (!frame_ready) {
-    time.elapsed = get_total_time() - time.total_time;
-    time.time_since_last_frame += time.elapsed;
-    time.total_time += time.elapsed;
+    float elapsed = get_total_time() - time.total_time;
+    time.time_since_last_frame += elapsed;
+    time.total_time += elapsed;
     time.fps = time.frame_count / time.total_time;
   }
 
   frame_ready = (time.time_since_last_frame >= time.time_per_frame);
 
   if (frame_ready) {
+    // TODO think about how elapsed is determined. Does it makes ense to always be time_per_frame?
+    time.elapsed = time.time_per_frame;
     time.time_since_last_frame -= time.time_per_frame;
     time.frame_count++;
   }

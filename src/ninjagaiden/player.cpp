@@ -4,34 +4,87 @@
 //
 //  Created by Shaun West on 7/24/17.
 //
-//  Remember: The player object should handle player logic, but does not store player state
 //
-//
-// TODO need a player to move around
 // TODO player animations
 // TODO then make camera follow player
 
 #include "player.h"
 
 #include "util/util.h"
+#include "physics.h"
 
 Player::Player(SpriteFrameset &frameset, VideoSDL &video) : video(video) {
-  playerImage = video.create_image2(frameset.image_path);
+  playerImage = video.create_image(frameset.image_path);
 }
 
-void Player::update(Sprite &player_spec, SpriteFrameset &frameset, float elapsed) {
-  animator.update(player_spec.animation, frameset, elapsed);
-}
+void Player::update(Sprite &player, SpriteFrameset &frameset, const NESInput &input, float elapsed) {
+  update_movement(player.physics, player.position, input);
+  //update_jump(player.physics, player.flags, input);
 
-void Player::render(const Sprite &player_spec, const SpriteFrameset &frameset) const {
-  SpriteFrame frame = frameset.frames.at(
-      player_spec.animation.current_sequence)[player_spec.animation.current_sequence_index];
+  // Set velocity
+  player.physics.velocity = Physics::move(player.physics, elapsed);
 
-  IntRect rsrc(frame.atlas_x, frame.atlas_y, player_spec.size.width, player_spec.size.height);
-  IntRect rdest(
-      player_spec.position.x, player_spec.position.y,
-      player_spec.size.width, player_spec.size.height
+  // Set position
+  player.position = IntVector2(
+    player.position.x + round(player.physics.velocity.x),
+    player.position.y + round(player.physics.velocity.y)
   );
 
-  video.render_texture(playerImage.get(), rsrc, rdest);
+  // Do animation stuff
+  if (player.physics.velocity.x > 0) {
+    player.animation.current_sequence = "walk";
+    player.dir = DIR_RIGHT;
+  } else if (player.physics.velocity.x < 0) {
+    player.animation.current_sequence = "walk";
+    player.dir = DIR_LEFT;
+  } else {
+    player.animation.current_sequence = "idle";
+  }
+
+  player.animation.flip = (player.dir == DIR_LEFT);
+
+  animator.update(player.animation, frameset, elapsed);
+}
+
+void Player::update_movement(PhysicsSpec &physics, const IntVector2 position, const NESInput &input) {
+  constexpr int move_delta = 125;
+
+  // Check input and apply acceleration
+  if (input.right) {
+    physics.acceleration.x = move_delta;
+  } else if (input.left) {
+    physics.acceleration.x = -move_delta;
+  } else {
+    physics.acceleration.x = 0;
+  }
+}
+
+// TODO WIP needs collisions
+void Player::update_jump(PhysicsSpec &physics, PhysicsFlags &flags, const NESInput &input) {
+  constexpr int jump_delta = 1300; //650;
+
+  if (!input.up) { // && flags.colliding_with_floor) {
+    flags.jump_cancel = false;
+  }
+
+  if (/*flags.colliding_with_floor && */ !flags.jump_cancel) {
+    int jump_accel = (input.up) ? -jump_delta : 0;
+    if (jump_accel < 0) {
+      flags.jump_cancel = true;
+      physics.acceleration.y = jump_accel;
+    }
+  }
+}
+
+void Player::render(const Sprite &player, const SpriteFrameset &frameset) const {
+  SpriteFrame frame = frameset.frames.at(
+      player.animation.current_sequence)[player.animation.current_sequence_index];
+
+  IntRect rsrc(frame.atlas_x, frame.atlas_y, player.size.width, player.size.height);
+  IntRect rdest(
+    player.position.x, player.position.y,
+    player.size.width, player.size.height
+  );
+
+  video.render_texture(playerImage.get(), rsrc, rdest, player.animation.flip);
 }

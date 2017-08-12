@@ -138,10 +138,18 @@ void VideoSDL::render_texture(SDL_Texture *texture) const {
   SDL_RenderCopy(renderer.get(), texture, nullptr, nullptr);
 }
 
-void VideoSDL::render_texture(SDL_Texture *texture, IntRect src, IntRect dest) const {
+void VideoSDL::render_texture(SDL_Texture *texture, IntRect src, IntRect dest, bool flip) const {
   SDL_Rect src_rect = {src.x, src.y, src.width, src.height};
   SDL_Rect dest_rect = {dest.x, dest.y, dest.width, dest.height};
-  SDL_RenderCopy(renderer.get(), texture, &src_rect, &dest_rect);
+  SDL_RenderCopyEx(
+      renderer.get(),
+      texture,
+      &src_rect,
+      &dest_rect,
+      0.0,
+      nullptr,
+      flip ? SDL_FLIP_HORIZONTAL : SDL_FLIP_NONE
+  );
 }
 
 // TODO not sure if this is really necessary

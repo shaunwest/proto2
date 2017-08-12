@@ -102,6 +102,7 @@ int Game::start() {
       view->render(game_spec);
       //renderer.render_string() << timer.print_time().str();
       video.render_string("FPS: " + std::to_string(timer.get_time().fps), IntVector2{0, 0});
+      //std::cout << timer.get_time().elapsed << std::endl;
       video.render_end();
     }
   }

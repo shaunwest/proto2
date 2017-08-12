@@ -17,7 +17,7 @@
 #define START_NINPO 0
 #define START_ITEM  ITEM_NONE
 
-#define PLAYER_START_ANIMATION      "idle_right"
+#define PLAYER_START_ANIMATION      "idle"
 #define PLAYER_START_X              0
 #define PLAYER_START_Y              192
 #define PLAYER_WIDTH                32

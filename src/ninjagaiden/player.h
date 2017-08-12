@@ -9,19 +9,21 @@
 #ifndef player_h
 #define player_h
 
-//#include "loader/aseprite_loader.h"
+#include "spec.h"
 #include "video/video_sdl.h"
 #include "sprite/sprite_animator.h"
-#include "game/level_data.h"
+#include "control/nes_input_manager.h"
 
 class Player
 {
 public:
   Player();
   Player(SpriteFrameset &frameset, VideoSDL &video);
-  void update(Sprite &player_spec, SpriteFrameset &frameset, float elapsed);
-  void render(const Sprite &player_spec, const SpriteFrameset &frameset) const;
+  void update(Sprite &player, SpriteFrameset &frameset, const NESInput &input, float elapsed);
+  void render(const Sprite &player, const SpriteFrameset &frameset) const;
 private:
+  void update_movement(PhysicsSpec &physics, const IntVector2 position, const NESInput &input);
+  void update_jump(PhysicsSpec &physics, PhysicsFlags &flags, const NESInput &input);
   UniqueTexture playerImage;
   VideoSDL &video;
   SpriteAnimator animator;

@@ -30,13 +30,6 @@ struct Size {
   int height;
 };
 
-/*
-struct Vector {
-  int x;
-  int y;
-};
-*/
-
 // VECTOR2
 template <typename T>
 struct Vector2 {
@@ -77,8 +70,9 @@ Vector2<T> operator* (const Vector2<T> &lhs, T rhs) {
   return Vector2<T>(lhs * rhs.x, lhs * rhs.y);
 }
 
-typedef Vector2<int> IntVector2;
-typedef Vector2<float> FloatVector2;
+typedef Vector2<int> IntVector2; // TODO rename to Vector2i
+typedef Vector2<float> FloatVector2; // TODO drop this
+typedef Vector2<float> Vector2f;
 
 typedef std::vector<IntVector2> IntVectorList;
 typedef std::vector<FloatVector2> FloatVectorList;

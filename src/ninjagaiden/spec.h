@@ -28,18 +28,18 @@ struct PhysicsAttributes {
   float jump_max_speed = 15;
 };
 
-struct PhysicsState {
+struct PhysicsSpec {
   FloatVector2 velocity;
-  FloatVector2 acceleration = FloatVector2(0.0, 0.0);
+  FloatVector2 acceleration;
   PhysicsAttributes attrs;
 };
 
 struct PhysicsFlags {
-  bool jump_cancel = false;
-  bool colliding_with_floor = false;
-  bool colliding_with_left_wall = false;
-  bool colliding_with_right_wall = false;
-  bool colliding_with_ceiling = false;
+  bool jump_cancel;
+  bool colliding_with_floor;
+  bool colliding_with_left_wall;
+  bool colliding_with_right_wall;
+  bool colliding_with_ceiling;
 };
 
 enum CollisionType {
@@ -62,6 +62,7 @@ struct SpriteAnimation {
   std::string current_sequence;
   float duration_count;
   int current_sequence_index;
+  bool flip;
 };
 
 enum SpriteDirection { DIR_RIGHT, DIR_LEFT, DIR_UP, DIR_DOWN };
@@ -75,7 +76,7 @@ struct Sprite {
   Size size;
   SpriteDirection dir;
   IntRect hitbox;
-  PhysicsState physics;
+  PhysicsSpec physics;
   PhysicsFlags flags;
 };
 
@@ -154,6 +155,7 @@ struct GameSpec {
       { PLAYER_START_X, PLAYER_START_Y },
       { PLAYER_WIDTH, PLAYER_HEIGHT },
       DIR_RIGHT
+      // TODO what about flip?
     },
     { // Camera
       { CAMERA_START_X, CAMERA_START_Y },
