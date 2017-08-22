@@ -31,6 +31,7 @@ Layers TiledLoader::get_layers(Json::Value layers_config) {
 
   for (auto layer_config : layers_config) {
     if (!layer_config.isMember(PROPERTIES_KEY)) {
+      LOG(LOG_ERROR) << "TiledLoader: No properties key!";
       continue;
     }
 
@@ -74,12 +75,12 @@ CollisionLayer TiledLoader::get_collision_layer(Json::Value layer_config) {
 CollisionBox TiledLoader::get_collision_box(Json::Value box_config) {
   Recti rect(
     box_config["x"].asInt(),
-    box_config["y"].asInt(),
+    box_config["y"].asInt() + 64, // FIXME this can't be here
     box_config["width"].asInt(),
     box_config["height"].asInt()
   );
 
-  CollisionBox box = {rect, normal};
+  CollisionBox box = {rect, COLLISION_TYPE_NORMAL};
 
   return box;
 }
@@ -90,8 +91,9 @@ SpriteLayer TiledLoader::get_sprite_layer(Json::Value layer_config) {
   SpriteLayer new_layer;
 
   // TODO for range
-  for (int i = 0; i < objects.size(); ++i) {
-    Json::Value object_config = objects[i];
+  //for (int i = 0; i < objects.size(); ++i) {
+  for (auto object_config : objects) {
+    //Json::Value object_config = objects[i];
     new_layer.sprites.push_back(get_sprite(object_config));
   }
 
@@ -99,19 +101,21 @@ SpriteLayer TiledLoader::get_sprite_layer(Json::Value layer_config) {
 }
 
 Sprite TiledLoader::get_sprite(Json::Value sprite_config) {
-  //std::string sprite_id = sprite_config["id"].asString(); // TODO NOTE need to use id instead of name in config
-
   // TODO how do you link a sprite animation to a frameset?
   SpriteAnimation sprite_animation = {
     0, // frameset unknown currently
     "idle"
   };
 
+  int type = (sprite_config.isMember(PROPERTIES_KEY) &&
+      sprite_config[PROPERTIES_KEY].isMember("frameset")) ?
+    sprite_config[PROPERTIES_KEY]["frameset"].asInt() : 0;
+
   // Create the sprite
   // Note: Tiled sets "y" value strangely. Need to subtract the height of the sprite
   // to get correct value
   Sprite sprite = {
-    sprite_config["type"].asString(), // TODO add type to config
+    type,
     sprite_animation,
     {
       sprite_config["x"].asInt(),

@@ -36,8 +36,8 @@ struct Vector2 {
   }
 
   // should this be a standalone function?
-  std::string print() {
-    return to_string(x) + ", " + to_string(y);
+  std::string print() const {
+    return std::to_string(x) + ", " + std::to_string(y);
   }
 
   // should this be a standalone function?
@@ -60,7 +60,10 @@ typedef Vector2<int> Vector2i;
 typedef Vector2<float> Vector2f;
 
 typedef std::vector<Vector2i> IntVectorList;
+typedef std::vector<Vector2i> VectorListi;
 typedef std::vector<Vector2f> FloatVectorList;
+typedef std::vector<Vector2f> VectorListf;
+
 
 // RECT
 template <typename T>
@@ -79,6 +82,11 @@ struct Rect {
   Rect(T x, T y, T width, T height)
     : x(x), y(y), width(width), height(height), top(y),
       left(x), right(x + width), bottom(y + height) {}
+
+  std::string print() const {
+    return std::to_string(x) + ", " + std::to_string(y) + "; " +
+      std::to_string(width) + ", " + std::to_string(height);
+  }
 };
 
 typedef Rect<int> Recti;
@@ -86,5 +94,28 @@ typedef Rect<float> Rectf;
 
 typedef std::vector<Recti> RectListi;
 typedef std::vector<Rectf> RectListf;
+
+
+// LINES
+template <typename T>
+struct LineSegment {
+  T p1;
+  T p2;
+  T dist;
+  float length = 0.0;
+  float angle = 0.0;
+  //int id;
+
+  bool operator==(const LineSegment& rhs) {
+    return (p1.x == rhs.p1.x && p1.y == rhs.p1.y && p2.x == rhs.p2.x && p2.y == rhs.p2.y);
+  }
+};
+
+typedef LineSegment<Vector2i> LineSegmenti;
+typedef LineSegment<Vector2f> LineSegmentf;
+
+
+// FUNCTIONS
+bool intersects(Recti rect1, Recti rect2);
 
 #endif

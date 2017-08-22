@@ -10,7 +10,7 @@
 
 #include "level.h"
 #include "util/log.h"
-#include "screen_view.h"
+#include "screen.h"
 #include "title_screen.h"
 #include "level_screen.h"
 #include "loader/tiled_loader.h"
@@ -33,13 +33,15 @@ int Game::start() {
   TiledLoader level_loader;
   AsepriteLoader sprite_loader;
 
-  // This will point to the current screen/
-  // Also, set view mode to the title screen
-  UScreenView view;
+  // This will point to the current screen
+  // Also, set current_screen mode to the title screen
+  UScreen current_screen;
   game_spec.view_mode = MODE_LOAD_TITLE;
 
   // Load some initial assets
+  // TODO just put player in sprite_framesets as 0?
   game_spec.level_spec.player_frameset = sprite_loader.load("assets/sprites/ryu.json", video);
+  game_spec.level_spec.sprite_framesets[1] = sprite_loader.load("assets/sprites/enemy.json", video);
 
   // Main game loop
   bool quit = false;
@@ -79,19 +81,19 @@ int Game::start() {
         video.init_window(game_spec.window);
       }
 
-      // Handle view modes
+      // Handle current_screen modes
       switch (game_spec.view_mode) {
         case MODE_LOAD_TITLE:
-          view = UTitleScreen(new TitleScreen(game_spec, video));
+          current_screen = UTitleScreen(new TitleScreen(game_spec, video));
           game_spec.view_mode = MODE_UPDATE;
           break;
         case MODE_LOAD_LEVEL_1:
           game_spec.level_spec.layers = level_loader.load("levels/level1_1.json");
-          view = ULevelScreen(new LevelScreen(game_spec, video));
+          current_screen = ULevelScreen(new LevelScreen(game_spec, video));
           game_spec.view_mode = MODE_UPDATE;
           break;
         case MODE_UPDATE:
-          view->update(game_spec, timer.get_time().elapsed);
+          current_screen->update(game_spec, timer.get_time().elapsed);
           break;
       }
     }
@@ -99,7 +101,7 @@ int Game::start() {
     // RENDER when a full frame has passed
     if (render) {
       video.render_begin();
-      view->render(game_spec);
+      current_screen->render(game_spec);
       //renderer.render_string() << timer.print_time().str();
       video.render_string("FPS: " + std::to_string(timer.get_time().fps), Vector2i{0, 0});
       video.render_string("CAM: " + std::to_string(game_spec.level_spec.camera.position.x), Vector2i{0, 20});

@@ -9,11 +9,11 @@
 #ifndef level_screen_h
 #define level_screen_h
 
-#include "screen_view.h"
+#include "screen.h"
 #include "video/video_sdl.h"
 #include "level.h"
 
-class LevelScreen : public ScreenView
+class LevelScreen : public Screen
 {
 public:
   // TODO can any of this be const?
@@ -25,6 +25,6 @@ private:
   VideoSDL &video;
 };
 
-typedef std::unique_ptr<LevelScreen, ScreenViewDeleter> ULevelScreen;
+typedef std::unique_ptr<LevelScreen, ScreenDeleter> ULevelScreen;
 
 #endif

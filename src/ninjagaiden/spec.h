@@ -43,7 +43,7 @@ struct PhysicsFlags {
 };
 
 enum CollisionType {
-  normal, passthru
+  COLLISION_TYPE_NORMAL, COLLISION_TYPE_PASSTHRU
 };
 
 struct CollisionBox {
@@ -70,12 +70,12 @@ enum SpriteAi { AI_NONE, AI_BASIC };
 
 // TODO should this be SpriteSpec? Should other VOs follow same scheme?
 struct Sprite {
-  std::string type;
+  int frameset_id;
   SpriteAnimation animation;
   Vector2i position;
   Size size;
   SpriteDirection dir;
-  Recti hitbox;
+  Recti bounds;
   PhysicsSpec physics;
   PhysicsFlags flags;
 };
@@ -133,6 +133,7 @@ struct GameSpec {
     WINDOW_TITLE,
     { WINDOW_WIDTH, WINDOW_HEIGHT },
     { LOGICAL_WIDTH, LOGICAL_HEIGHT },
+    WINDOW_SCALE,
     FULLSCREEN
   };
   NESInput input;
@@ -141,21 +142,22 @@ struct GameSpec {
     START_LIVES, START_SCORE, START_NINPO, START_ITEM
   };
   LevelSpec level_spec = {
-    {}, // Player frameset // TODO Ehhh... annoying that I don't know what this represents
+    {}, // Player frameset // TODO Ehhh... annoying that I don't know what these represent without comments
     {}, // Sprite framesets
     {}, // Layers
     {   // Player
-      "player", // Sprite type
+      0, // Sprite frameset id
       { // Animation
         FRAMESET_DEFAULT_ID,
         PLAYER_START_ANIMATION,
         ANIMATION_DEFAULT_DURATION,
-        ANIMATION_START_INDEX
+        ANIMATION_START_INDEX,
+        false // flip
       },
       { PLAYER_START_X, PLAYER_START_Y },
       { PLAYER_WIDTH, PLAYER_HEIGHT },
-      DIR_RIGHT
-      // TODO what about flip?
+      DIR_RIGHT,
+      { 10, 0, 12, 32 } // bounds
     },
     { // Camera
       { CAMERA_START_X, CAMERA_START_Y },

@@ -12,19 +12,20 @@
 #include "video/video_sdl.h"
 #include "control/nes_input_manager.h"
 #include "util/geom.h"
-#include "screen_view.h"
+#include "screen.h"
 #include "spec.h"
 
-class TitleScreen : public ScreenView {
+class TitleScreen : public Screen {
 public:
   TitleScreen(GameSpec &game_spec, VideoSDL &video);
   void update(GameSpec &game_spec, float elapsed);
   void render(const GameSpec &game_spec) const;
 private:
   VideoSDL &video;
-  UniqueTexture backgroundImage;
+  UniqueTexture background;
+  Size backgroundSize;
 };
 
-typedef std::unique_ptr<TitleScreen, ScreenViewDeleter> UTitleScreen;
+typedef std::unique_ptr<TitleScreen, ScreenDeleter> UTitleScreen;
 
 #endif

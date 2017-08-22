@@ -14,7 +14,6 @@
 #define game_h
 
 #include "util/timer.h"
-//#include "game/game_data.h"
 #include "spec.h"
 
 class Game {
@@ -27,4 +26,4 @@ private:
   GameSpec game_spec;
 };
 
-#endif /* game_h */
+#endif

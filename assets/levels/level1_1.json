@@ -2,7 +2,7 @@
  "layers":[
         {
          "image":"level1_1.png",
-         "name":"background",
+         "name":"Background",
          "opacity":1,
          "properties":
             {
@@ -16,8 +16,85 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "name":"Collisions",
+         "objects":[
+                {
+                 "height":20,
+                 "id":6,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":704,
+                 "x":0,
+                 "y":154
+                }, 
+                {
+                 "height":16,
+                 "id":7,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":144,
+                 "x":704,
+                 "y":138
+                }],
+         "opacity":1,
+         "properties":
+            {
+             "subtype":"collision"
+            },
+         "propertytypes":
+            {
+             "subtype":"string"
+            },
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "name":"Sprites",
+         "objects":[
+                {
+                 "height":32,
+                 "id":8,
+                 "name":"Enemy",
+                 "properties":
+                    {
+                     "frameset":1
+                    },
+                 "propertytypes":
+                    {
+                     "frameset":"int"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":212,
+                 "y":122
+                }],
+         "opacity":1,
+         "properties":
+            {
+             "subtype":"sprite"
+            },
+         "propertytypes":
+            {
+             "subtype":"string"
+            },
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":1,
+ "nextobjectid":10,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.0.2",

@@ -9,7 +9,8 @@
 #include "title_screen.h"
 
 TitleScreen::TitleScreen(GameSpec &game_spec, VideoSDL &video) : video(video) {
-  backgroundImage = video.create_image("assets/sprites/title.png");
+  background = video.create_image("assets/sprites/title.png");
+  backgroundSize = video.get_texture_size(background.get());
 }
 
 void TitleScreen::update(GameSpec &game_spec, float elapsed) {
@@ -19,5 +20,6 @@ void TitleScreen::update(GameSpec &game_spec, float elapsed) {
 }
 
 void TitleScreen::render(const GameSpec &game_spec) const {
-  video.render_texture(backgroundImage.get());
+  Recti size = { 0, 0, backgroundSize.width, backgroundSize.height };
+  video.render_texture(background.get(), size, size);
 }

@@ -26,6 +26,7 @@ public:
 private:
   Layers layers;
   Player player;
+  // TODO Sprites sprites;
   UniqueTexture backgroundImage;
   VideoSDL &video;
   Camera camera;

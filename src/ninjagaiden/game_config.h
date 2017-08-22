@@ -6,8 +6,9 @@
 //
 
 #define WINDOW_TITLE    "Ninja Gaiden Demo"
-#define WINDOW_WIDTH    512
-#define WINDOW_HEIGHT   480
+#define WINDOW_WIDTH    294
+#define WINDOW_HEIGHT   240
+#define WINDOW_SCALE    2
 #define FULLSCREEN      false
 #define LOGICAL_WIDTH   256
 #define LOGICAL_HEIGHT  240
@@ -18,7 +19,7 @@
 #define START_ITEM  ITEM_NONE
 
 #define PLAYER_START_ANIMATION      "idle"
-#define PLAYER_START_X              0
+#define PLAYER_START_X              16
 #define PLAYER_START_Y              186
 #define PLAYER_WIDTH                32
 #define PLAYER_HEIGHT               32

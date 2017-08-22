@@ -1,20 +1,19 @@
 //
-//  screen_view.h
+//  screen.h
 //  Proto2
 //
 //  Created by Shaun West on 7/15/17.
 //
 //
 
-#ifndef screen_view_h
-#define screen_view_h
+#ifndef screen_h
+#define screen_h
 
 #include "util/log.h"
 #include "video/video_sdl.h"
-//#include "game_data.h"
 #include "spec.h"
 
-class ScreenView {
+class Screen {
 public:
   virtual void update(GameSpec &game_spec, float elapsed) {
     LOG(LOG_WARNING) << "View::update not implemented";
@@ -22,19 +21,19 @@ public:
   virtual void render(const GameSpec &game_spec) const {
     LOG(LOG_WARNING) << "View::render not implemented";
   };
-  virtual ~ScreenView() {
+  virtual ~Screen() {
     LOG(LOG_DEBUG) << "View::~ScreenView called";
   };
 };
 
-struct ScreenViewDeleter
+struct ScreenDeleter
 {
-  void operator()(ScreenView *p) const {
+  void operator()(Screen *p) const {
     delete p;
-    LOG(LOG_INFO) << "Screen View deleted";
+    LOG(LOG_INFO) << "Screen deleted";
   }
 };
 
-typedef std::unique_ptr<ScreenView, ScreenViewDeleter> UScreenView;
+typedef std::unique_ptr<Screen, ScreenDeleter> UScreen;
 
 #endif

@@ -19,11 +19,15 @@ class Player
 public:
   Player();
   Player(SpriteFrameset &frameset, VideoSDL &video);
-  void update(Sprite &player, SpriteFrameset &frameset, const NESInput &input, float elapsed);
+  void update(LevelSpec &level, const NESInput &input, float elapsed);
   void render(const Sprite &player, const SpriteFrameset &frameset, const CameraSpec &camera) const;
 private:
-  void update_movement(PhysicsSpec &physics, const Vector2i position, const NESInput &input);
+  void update_collisions(Sprite &sprite, const Recti &new_hitbox, const Recti &old_hitbox, const Layers &layers);
+  void update_animation(Sprite &player, SpriteFrameset &frameset, float elapsed);
+  void update_movement(Vector2f &acceleration, const NESInput &input);
   void update_jump(PhysicsSpec &physics, PhysicsFlags &flags, const NESInput &input);
+  Vector2i get_position(Sprite &player);
+  Recti get_hitbox(Vector2i position, const Recti &bounds);
   UniqueTexture playerImage;
   VideoSDL &video;
   SpriteAnimator animator;

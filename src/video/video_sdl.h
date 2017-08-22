@@ -24,7 +24,8 @@ struct WindowSpec
 {
   std::string title;
   Size size;
-  Size resolution;
+  Size logical_size;
+  int scale;
   bool fullscreen;
 };
 
@@ -62,9 +63,9 @@ public:
   UniqueTexture create_image(std::string image_path);
   UniqueWindow create_window(const WindowSpec &window_spec) const;
   UniqueRenderer create_renderer(SDL_Window * window) const;
+  Size get_texture_size(SDL_Texture * texture);
   void render_begin() const;
   void render_end() const;
-  void render_texture(SDL_Texture *texture) const;
   void render_texture(SDL_Texture *texture, Recti src, Recti dest, bool flip = false) const;
   void render_string(std::string str, Vector2i position) const;
   void get_display_mode();
@@ -72,6 +73,8 @@ private:
   UniqueRenderer renderer;
   UniqueWindow window;
   FontTTF font;
+  float scale;
+  Vector2f stretch;
 };
 
 #endif /* video_sdl_h */

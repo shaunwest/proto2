@@ -16,7 +16,7 @@ ASSET_OUTPUT="assets/sprites"
 # Asset build folder
 ASSET_BUILD="build/assets/sprites"
 
-for SPRITE in ryu
+for SPRITE in ryu enemy
 do
   $ASEPRITE -b ${ASSET_DEV}/${SPRITE}/*.ase \
     --sheet-pack \

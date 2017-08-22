@@ -25,6 +25,11 @@ VideoSDL::VideoSDL(const WindowSpec &window_spec) {
 
   font = FontTTF("assets/fonts/FreeSans.ttf");
 
+  float stretch_x = float(window_spec.size.width) / float(window_spec.logical_size.width);
+  float stretch_y = float(window_spec.size.height) / float(window_spec.logical_size.height);
+  scale = window_spec.scale;
+  stretch = Vector2f(stretch_x, stretch_y);
+
   init_window(window_spec);
 }
 
@@ -46,11 +51,11 @@ void VideoSDL::init_window(const WindowSpec &window_spec) {
   }
 
   SDL_SetRenderDrawColor(renderer.get(), 64, 64, 64, 255);
-  SDL_RenderSetLogicalSize(
+  /*SDL_RenderSetLogicalSize(
     renderer.get(),
     window_spec.resolution.width,
     window_spec.resolution.height
-  );
+  );*/
 
   LOG(LOG_INFO) << "Video initialized";
 }
@@ -62,13 +67,17 @@ UniqueWindow VideoSDL::create_window(const WindowSpec &window_spec) const {
     flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
   }
 
+  if (!window_spec.scale) {
+    LOG(LOG_ERROR) << "A valid window scale was not provided!";
+  }
+
   // Create the main game window
   UniqueWindow new_window(SDL_CreateWindow(
     window_spec.title.c_str(),
     SDL_WINDOWPOS_UNDEFINED,
     SDL_WINDOWPOS_UNDEFINED,
-    window_spec.size.width,
-    window_spec.size.height,
+    window_spec.size.width * window_spec.scale,
+    window_spec.size.height * window_spec.scale,
     flags
   ));
 
@@ -124,6 +133,12 @@ void VideoSDL::render_end() const {
   SDL_RenderPresent(renderer.get());
 }
 
+Size VideoSDL::get_texture_size(SDL_Texture * texture) {
+  Size size;
+  SDL_QueryTexture(texture, nullptr, nullptr, &size.width, &size.height);
+  return size;
+}
+
 void VideoSDL::render_string(std::string str, Vector2i position) const {
   SDL_Surface* stats_surface = font.get_font(str.c_str());
   SDL_Texture* stats_texture = SDL_CreateTextureFromSurface(renderer.get(), stats_surface);
@@ -134,13 +149,18 @@ void VideoSDL::render_string(std::string str, Vector2i position) const {
   SDL_DestroyTexture(stats_texture);
 }
 
-void VideoSDL::render_texture(SDL_Texture *texture) const {
-  SDL_RenderCopy(renderer.get(), texture, nullptr, nullptr);
-}
-
 void VideoSDL::render_texture(SDL_Texture *texture, Recti src, Recti dest, bool flip) const {
+  //float x_scale = 1.148 * 2;
+  float x_scale = stretch.x * scale;
+  float y_scale = scale;
+  int x = dest.x * x_scale;
+  int y = dest.y * y_scale;
+  int width = dest.width * x_scale;
+  int height = dest.height * y_scale;
+
   SDL_Rect src_rect = {src.x, src.y, src.width, src.height};
-  SDL_Rect dest_rect = {dest.x, dest.y, dest.width, dest.height};
+  SDL_Rect dest_rect = {x, y, width, height};
+
   SDL_RenderCopyEx(
       renderer.get(),
       texture,
