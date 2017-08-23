@@ -1,14 +1,14 @@
 //
-//  game.cpp
+//  game_manager.cpp
 //  Proto2
 //
 //  Created by Shaun West on 6/11/17.
 //
 //
 
-#include "game.h"
+#include "game_manager.h"
 
-#include "level.h"
+#include "level_manager.h"
 #include "util/log.h"
 #include "screen.h"
 #include "title_screen.h"
@@ -18,13 +18,13 @@
 
 LogLevel Logger::reportingLevel = LOG_DEBUG;
 
-Game::Game() {}
+GameManager::GameManager() {}
 
-Game::Game(GameSpec game_spec) : game_spec(game_spec) {}
+GameManager::GameManager(Game game) : game(game) {}
 
-int Game::start() {
+int GameManager::start() {
   // Init video
-  VideoSDL video(game_spec.window);
+  VideoSDL video(game.window);
 
   // Init input
   NESInputManager input_manager;
@@ -36,12 +36,12 @@ int Game::start() {
   // This will point to the current screen
   // Also, set current_screen mode to the title screen
   UScreen current_screen;
-  game_spec.view_mode = MODE_LOAD_TITLE;
+  game.view_mode = MODE_LOAD_TITLE;
 
   // Load some initial assets
   // TODO just put player in sprite_framesets as 0?
-  game_spec.level_spec.player_frameset = sprite_loader.load("assets/sprites/ryu.json", video);
-  game_spec.level_spec.sprite_framesets[1] = sprite_loader.load("assets/sprites/enemy.json", video);
+  game.level.player_frameset = sprite_loader.load("assets/sprites/ryu.json", video);
+  game.level.sprite_framesets[1] = sprite_loader.load("assets/sprites/enemy.json", video);
 
   // Main game loop
   bool quit = false;
@@ -66,9 +66,9 @@ int Game::start() {
       // UPDATE
 
       // Check input
-      input_manager.update(game_spec.input);
+      input_manager.update(game.input);
 
-      NESInput input_action = game_spec.input;
+      NESInput input_action = game.input;
 
       // Hit ESC to quit, F to toggle fullscreen
       if (input_action.esc) {
@@ -76,24 +76,24 @@ int Game::start() {
         quit = true;
       } else if (input_action.fullscreen && input_action.fullscreen_count > 15) {
         LOG(LOG_INFO) << "F was pressed";
-        game_spec.window.fullscreen = !game_spec.window.fullscreen;
-        game_spec.input.fullscreen_count = 0;
-        video.init_window(game_spec.window);
+        game.window.fullscreen = !game.window.fullscreen;
+        game.input.fullscreen_count = 0;
+        video.init_window(game.window);
       }
 
       // Handle current_screen modes
-      switch (game_spec.view_mode) {
+      switch (game.view_mode) {
         case MODE_LOAD_TITLE:
-          current_screen = UTitleScreen(new TitleScreen(game_spec, video));
-          game_spec.view_mode = MODE_UPDATE;
+          current_screen = UTitleScreen(new TitleScreen(game, video));
+          game.view_mode = MODE_UPDATE;
           break;
         case MODE_LOAD_LEVEL_1:
-          game_spec.level_spec.layers = level_loader.load("levels/level1_1.json");
-          current_screen = ULevelScreen(new LevelScreen(game_spec, video));
-          game_spec.view_mode = MODE_UPDATE;
+          game.level.layers = level_loader.load("levels/level1_1.json");
+          current_screen = ULevelScreen(new LevelScreen(game, video));
+          game.view_mode = MODE_UPDATE;
           break;
         case MODE_UPDATE:
-          current_screen->update(game_spec, timer.get_time().elapsed);
+          current_screen->update(game, timer.get_time().elapsed);
           break;
       }
     }
@@ -101,10 +101,10 @@ int Game::start() {
     // RENDER when a full frame has passed
     if (render) {
       video.render_begin();
-      current_screen->render(game_spec);
+      current_screen->render(game);
       //renderer.render_string() << timer.print_time().str();
       video.render_string("FPS: " + std::to_string(timer.get_time().fps), Vector2i{0, 0});
-      video.render_string("CAM: " + std::to_string(game_spec.level_spec.camera.position.x), Vector2i{0, 20});
+      video.render_string("CAM: " + std::to_string(game.level.camera.position.x), Vector2i{0, 20});
       //std::cout << timer.get_time().elapsed << std::endl;
       video.render_end();
     }

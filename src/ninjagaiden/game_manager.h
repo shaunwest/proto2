@@ -1,5 +1,5 @@
 //
-//  game.h
+//  game_manager.h
 //  Proto2
 //
 //  Created by Shaun West on 6/11/17.
@@ -10,20 +10,20 @@
 // PROJECT: Do transition from title to game screen
 
 
-#ifndef game_h
-#define game_h
+#ifndef game_manager_h
+#define game_manager_h
 
 #include "util/timer.h"
 #include "spec.h"
 
-class Game {
+class GameManager {
 public:
-  Game();
-  Game(GameSpec game_spec);
+  GameManager(); // TODO is this needed?
+  GameManager(Game game);
   int start();
 private:
   GameTimer timer;
-  GameSpec game_spec;
+  Game game;
 };
 
 #endif

@@ -11,17 +11,17 @@
 
 #include "screen.h"
 #include "video/video_sdl.h"
-#include "level.h"
+#include "level_manager.h"
 
 class LevelScreen : public Screen
 {
 public:
   // TODO can any of this be const?
-  LevelScreen(GameSpec &game_spec, VideoSDL &video);
-  void update(GameSpec &game_spec, float elapsed);
-  void render(const GameSpec &game_spec) const;
+  LevelScreen(Game &game, VideoSDL &video);
+  void update(Game &game, float elapsed);
+  void render(const Game &game) const;
 private:
-  Level level;
+  LevelManager levelManager;
   VideoSDL &video;
 };
 

@@ -7,19 +7,19 @@
 //
 // TODO then make camera follow player
 
-#include "player.h"
+#include "player_object.h"
 
 #include "util/geom.h"
-#include "physics.h"
-#include "collision.h"
+#include "ninjagaiden/action.h"
+#include "ninjagaiden/collision.h"
 
-Player::Player(SpriteFrameset &frameset, VideoSDL &video) : video(video) {
+PlayerObject::PlayerObject(SpriteFrameset &frameset, VideoSDL &video) : video(video) {
   playerImage = video.create_image(frameset.image_path);
 }
 
-// FIXME: need to adjust collisions because coordinates don't take HUD into consideration. 
+// FIXME: need to adjust collisions because coordinates don't take HUD into consideration.
 // made a temporary fix in tiled_loader.cpp
-void Player::update(LevelSpec &level, const NESInput &input, float elapsed) {
+void PlayerObject::update(Level &level, const NESInput &input, float elapsed) {
   // Update left & right acceleration
   update_movement(level.player.physics.acceleration, input);
 
@@ -30,7 +30,7 @@ void Player::update(LevelSpec &level, const NESInput &input, float elapsed) {
   update_jump(level.player.physics, level.player.flags, input);
 
   // Update velocity based on acceleration
-  level.player.physics.velocity = Physics::move(level.player.physics, elapsed);
+  level.player.physics.velocity = Action::move(level.player.physics, elapsed);
 
   // Get the player's hitbox based on their current, unmodified position
   Recti hitbox = get_hitbox(level.player.position, level.player.bounds);
@@ -44,7 +44,7 @@ void Player::update(LevelSpec &level, const NESInput &input, float elapsed) {
   // Adjust accel, velocity, and flags based on any collisions that happen
   update_collisions(level.player, new_hitbox, hitbox, level.layers);
 
-  // Update the players position based on everything that's happened
+  // Update the player's position based on everything that's happened
   level.player.position = get_position(level.player);
 
   // Update the player's animation type and frame
@@ -52,7 +52,7 @@ void Player::update(LevelSpec &level, const NESInput &input, float elapsed) {
 }
 
 // Check input and apply acceleration
-void Player::update_movement(Vector2f &acceleration, const NESInput &input) {
+void PlayerObject::update_movement(Vector2f &acceleration, const NESInput &input) {
   constexpr int move_delta = 125;
 
   if (input.right) {
@@ -64,10 +64,8 @@ void Player::update_movement(Vector2f &acceleration, const NESInput &input) {
   }
 }
 
-void Player::update_collisions(Sprite &sprite, const Recti &new_hitbox, const Recti &old_hitbox, const Layers &layers) {
+void PlayerObject::update_collisions(Sprite &sprite, const Recti &new_hitbox, const Recti &old_hitbox, const Layers &layers) {
   Vector2i boxes_resolution = Collision::boxes(new_hitbox, old_hitbox, layers.collision_layer.boxes);
-
-  //LOG(LOG_DEBUG) << boxes_resolution.print();
 
   // Halt if hit wall
   if (boxes_resolution.x != 0) {
@@ -87,8 +85,7 @@ void Player::update_collisions(Sprite &sprite, const Recti &new_hitbox, const Re
   sprite.flags.colliding_with_right_wall = (boxes_resolution.x < 0);
 }
 
-// TODO WIP needs collisions
-void Player::update_jump(PhysicsSpec &physics, PhysicsFlags &flags, const NESInput &input) {
+void PlayerObject::update_jump(Physics &physics, PhysicsFlags &flags, const NESInput &input) {
   constexpr int jump_delta = 1300; //650;
 
   if (!input.up && flags.colliding_with_floor) {
@@ -104,7 +101,7 @@ void Player::update_jump(PhysicsSpec &physics, PhysicsFlags &flags, const NESInp
   }
 }
 
-void Player::update_animation(Sprite &player, SpriteFrameset &frameset, float elapsed) {
+void PlayerObject::update_animation(Sprite &player, SpriteFrameset &frameset, float elapsed) {
   if (player.physics.velocity.x > 0) {
     player.animation.current_sequence = "walk";
     player.dir = DIR_RIGHT;
@@ -120,7 +117,7 @@ void Player::update_animation(Sprite &player, SpriteFrameset &frameset, float el
   animator.update(player.animation, frameset, elapsed);
 }
 
-Recti Player::get_hitbox(Vector2i position, const Recti &bounds) {
+Recti PlayerObject::get_hitbox(Vector2i position, const Recti &bounds) {
   int left = position.x + bounds.left;
   int top = position.y + bounds.top;
   int width = bounds.width; //bounds.right - bounds.left;
@@ -129,14 +126,14 @@ Recti Player::get_hitbox(Vector2i position, const Recti &bounds) {
   return Recti(left, top, width, height);
 }
 
-Vector2i Player::get_position(Sprite &player) {
+Vector2i PlayerObject::get_position(Sprite &player) {
   return Vector2i(
     player.position.x + round(player.physics.velocity.x),
     player.position.y + round(player.physics.velocity.y)
   );
 }
 
-void Player::render(const Sprite &player, const SpriteFrameset &frameset, const CameraSpec &camera) const {
+void PlayerObject::render(const Sprite &player, const SpriteFrameset &frameset, const CameraSpec &camera) const {
   SpriteFrame frame = frameset.frames.at(
       player.animation.current_sequence)[player.animation.current_sequence_index];
 

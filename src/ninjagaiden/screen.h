@@ -15,10 +15,10 @@
 
 class Screen {
 public:
-  virtual void update(GameSpec &game_spec, float elapsed) {
+  virtual void update(Game &game, float elapsed) {
     LOG(LOG_WARNING) << "View::update not implemented";
   };
-  virtual void render(const GameSpec &game_spec) const {
+  virtual void render(const Game &game) const {
     LOG(LOG_WARNING) << "View::render not implemented";
   };
   virtual ~Screen() {

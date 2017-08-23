@@ -17,9 +17,9 @@
 
 class TitleScreen : public Screen {
 public:
-  TitleScreen(GameSpec &game_spec, VideoSDL &video);
-  void update(GameSpec &game_spec, float elapsed);
-  void render(const GameSpec &game_spec) const;
+  TitleScreen(Game &game, VideoSDL &video);
+  void update(Game &game, float elapsed);
+  void render(const Game &game) const;
 private:
   VideoSDL &video;
   UniqueTexture background;

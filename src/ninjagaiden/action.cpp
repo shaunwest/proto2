@@ -4,19 +4,19 @@
 //
 //  Created by Shaun West on 8/8/17.
 
-#include "physics.h"
+#include "action.h"
 
 #include <math.h>
 
 #include "util/log.h"
 
-Vector2f Physics::move(const PhysicsSpec &physics, float elapsed) {
+Vector2f Action::move(const Physics &physics, float elapsed) {
   Vector2f velocity = propel(physics.velocity, physics.acceleration, elapsed);
 
   velocity = decelerate(
     velocity,
     physics.acceleration,
-    Vector2f(125, 125), // TODO move to PhysicsSpec
+    Vector2f(125, 125), // TODO move to Physics
     elapsed
   );
 
@@ -26,7 +26,7 @@ Vector2f Physics::move(const PhysicsSpec &physics, float elapsed) {
   return velocity;
 }
 
-Vector2f Physics::propel(const Vector2f &vel, const Vector2f &accel, float elapsed) {
+Vector2f Action::propel(const Vector2f &vel, const Vector2f &accel, float elapsed) {
   Vector2f new_velocity = vel;
 
   new_velocity.x += (accel.x * elapsed);
@@ -36,7 +36,7 @@ Vector2f Physics::propel(const Vector2f &vel, const Vector2f &accel, float elaps
 }
 
 // If there's no acceleration, start deceleration
-Vector2f Physics::decelerate(const Vector2f &vel, const Vector2f &accel, const Vector2f &momentum, float elapsed) {
+Vector2f Action::decelerate(const Vector2f &vel, const Vector2f &accel, const Vector2f &momentum, float elapsed) {
   Vector2f new_velocity = vel;
 
   if (accel.x == 0) {
@@ -59,7 +59,7 @@ Vector2f Physics::decelerate(const Vector2f &vel, const Vector2f &accel, const V
 }
 
 // If velocity falls below a target value, just reset to zero
-Vector2f Physics::halt(const Vector2f &vel, const Vector2f &min) {
+Vector2f Action::halt(const Vector2f &vel, const Vector2f &min) {
   Vector2f new_velocity = vel;
 
   if (fabs(new_velocity.x) < min.x) {
@@ -74,7 +74,7 @@ Vector2f Physics::halt(const Vector2f &vel, const Vector2f &min) {
 }
 
 // Keep velocity from increasing beyond a given maximum
-Vector2f Physics::clamp(const Vector2f &vel, const PhysicsAttributes &attrs) {
+Vector2f Action::clamp(const Vector2f &vel, const PhysicsAttributes &attrs) {
   Vector2f new_velocity;
 
   new_velocity.x = (vel.x > 0) ?

@@ -28,12 +28,13 @@ struct PhysicsAttributes {
   float jump_max_speed = 15;
 };
 
-struct PhysicsSpec {
+struct Physics {
   Vector2f velocity;
   Vector2f acceleration;
   PhysicsAttributes attrs;
 };
 
+// TODO Rename to something that doesn't have 'Physics' in it?
 struct PhysicsFlags {
   bool jump_cancel;
   bool colliding_with_floor;
@@ -76,7 +77,7 @@ struct Sprite {
   Size size;
   SpriteDirection dir;
   Recti bounds;
-  PhysicsSpec physics;
+  Physics physics;
   PhysicsFlags flags;
 };
 
@@ -101,7 +102,7 @@ struct CameraSpec {
   Size viewport;
 };
 
-struct LevelSpec {
+struct Level {
   SpriteFrameset player_frameset;
   SpriteFramesets sprite_framesets;
   Layers layers;
@@ -128,7 +129,7 @@ enum ViewMode {
   MODE_UPDATE
 };
 
-struct GameSpec {
+struct Game {
   WindowSpec window = {
     WINDOW_TITLE,
     { WINDOW_WIDTH, WINDOW_HEIGHT },
@@ -141,7 +142,7 @@ struct GameSpec {
   PlayerStats player_stats = {
     START_LIVES, START_SCORE, START_NINPO, START_ITEM
   };
-  LevelSpec level_spec = {
+  Level level = {
     {}, // Player frameset // TODO Ehhh... annoying that I don't know what these represent without comments
     {}, // Sprite framesets
     {}, // Layers
