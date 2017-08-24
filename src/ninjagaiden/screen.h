@@ -16,13 +16,13 @@
 class Screen {
 public:
   virtual void update(Game &game, float elapsed) {
-    LOG(LOG_WARNING) << "View::update not implemented";
+    LOG(LOG_WARNING) << "Screen::update not implemented";
   };
   virtual void render(const Game &game) const {
-    LOG(LOG_WARNING) << "View::render not implemented";
+    LOG(LOG_WARNING) << "Screen::render not implemented";
   };
   virtual ~Screen() {
-    LOG(LOG_DEBUG) << "View::~ScreenView called";
+    LOG(LOG_DEBUG) << "Screen::~Screen called";
   };
 };
 

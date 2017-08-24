@@ -1,11 +1,10 @@
 //
-//  player.cpp
+//  player_object.cpp
 //  Proto2
 //
 //  Created by Shaun West on 7/24/17.
 //
 //
-// TODO then make camera follow player
 
 #include "player_object.h"
 
@@ -13,42 +12,44 @@
 #include "ninjagaiden/action.h"
 #include "ninjagaiden/collision.h"
 
-PlayerObject::PlayerObject(SpriteFrameset &frameset, VideoSDL &video) : video(video) {
+PlayerObject::PlayerObject(Sprite &player, SpriteFrameset &frameset, VideoSDL &video) :
+  player(player), frameset(frameset), video(video) {
   playerImage = video.create_image(frameset.image_path);
 }
 
 // FIXME: need to adjust collisions because coordinates don't take HUD into consideration.
 // made a temporary fix in tiled_loader.cpp
-void PlayerObject::update(Level &level, const NESInput &input, float elapsed) {
+//void PlayerObject::update(Level &level, const NESInput &input, float elapsed) {
+void PlayerObject::update(Layers &layers, const NESInput &input, float elapsed) {
   // Update left & right acceleration
-  update_movement(level.player.physics.acceleration, input);
+  update_movement(player.physics.acceleration, input);
 
   // Apply gravity
-  level.player.physics.acceleration.y = 125; // gravity
+  player.physics.acceleration.y = 125; // gravity
 
   // Update vertical acceleration
-  update_jump(level.player.physics, level.player.flags, input);
+  update_jump(player.physics, player.flags, input);
 
   // Update velocity based on acceleration
-  level.player.physics.velocity = Action::move(level.player.physics, elapsed);
+  player.physics.velocity = Action::move(player.physics, elapsed);
 
   // Get the player's hitbox based on their current, unmodified position
-  Recti hitbox = get_hitbox(level.player.position, level.player.bounds);
+  Recti hitbox = get_hitbox(player.position, player.bounds);
 
   // Get the position the player intends to get to
-  Vector2i target_position = get_position(level.player);
+  Vector2i target_position = get_position(player);
 
   // Get the player's proposed new hitbox, given intended position
-  Recti new_hitbox = get_hitbox(target_position, level.player.bounds);
+  Recti new_hitbox = get_hitbox(target_position, player.bounds);
 
   // Adjust accel, velocity, and flags based on any collisions that happen
-  update_collisions(level.player, new_hitbox, hitbox, level.layers);
+  update_collisions(player, new_hitbox, hitbox, layers);
 
   // Update the player's position based on everything that's happened
-  level.player.position = get_position(level.player);
+  player.position = get_position(player);
 
   // Update the player's animation type and frame
-  update_animation(level.player, level.player_frameset, elapsed);
+  update_animation(player, frameset, elapsed);
 }
 
 // Check input and apply acceleration
@@ -133,7 +134,7 @@ Vector2i PlayerObject::get_position(Sprite &player) {
   );
 }
 
-void PlayerObject::render(const Sprite &player, const SpriteFrameset &frameset, const CameraSpec &camera) const {
+void PlayerObject::render(const CameraSpec &camera) const {
   SpriteFrame frame = frameset.frames.at(
       player.animation.current_sequence)[player.animation.current_sequence_index];
 

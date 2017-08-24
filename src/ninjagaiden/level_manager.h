@@ -12,6 +12,7 @@
 #include <iostream>
 
 #include "objects/player_object.h"
+#include "objects/sprite_object.h"
 #include "camera.h"
 #include "control/nes_input_manager.h"
 #include "video/video_sdl.h"
@@ -25,7 +26,7 @@ public:
 private:
   Layers layers;
   PlayerObject player_object;
-  // TODO Sprites sprites;
+  SpriteObjectList sprites;
   UniqueTexture backgroundImage;
   VideoSDL &video;
   Camera camera;

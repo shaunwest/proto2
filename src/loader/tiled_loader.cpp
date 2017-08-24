@@ -116,6 +116,7 @@ Sprite TiledLoader::get_sprite(Json::Value sprite_config) {
   // to get correct value
   Sprite sprite = {
     type,
+    sprite_config["type"].asString(),
     sprite_animation,
     {
       sprite_config["x"].asInt(),

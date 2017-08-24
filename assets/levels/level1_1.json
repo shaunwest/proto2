@@ -74,7 +74,7 @@
                      "frameset":"int"
                     },
                  "rotation":0,
-                 "type":"",
+                 "type":"enemy",
                  "visible":true,
                  "width":32,
                  "x":212,

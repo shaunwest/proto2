@@ -17,7 +17,7 @@
   <properties>
    <property name="subtype" value="sprite"/>
   </properties>
-  <object id="8" name="Enemy" x="212" y="122" width="32" height="32">
+  <object id="8" name="Enemy" type="enemy" x="212" y="122" width="32" height="32">
    <properties>
     <property name="frameset" type="int" value="1"/>
    </properties>

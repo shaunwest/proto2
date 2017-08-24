@@ -18,9 +18,10 @@ class PlayerObject
 {
 public:
   PlayerObject();
-  PlayerObject(SpriteFrameset &frameset, VideoSDL &video);
-  void update(Level &level, const NESInput &input, float elapsed);
-  void render(const Sprite &player, const SpriteFrameset &frameset, const CameraSpec &camera) const;
+  PlayerObject(Sprite &player, SpriteFrameset &frameset, VideoSDL &video);
+  //void update(Level &level, const NESInput &input, float elapsed);
+  void update(Layers &layers, const NESInput &input, float elapsed);
+  void render(const CameraSpec &camera) const;
 private:
   void update_collisions(Sprite &sprite, const Recti &new_hitbox, const Recti &old_hitbox, const Layers &layers);
   void update_animation(Sprite &player, SpriteFrameset &frameset, float elapsed);
@@ -31,6 +32,8 @@ private:
   UniqueTexture playerImage;
   VideoSDL &video;
   SpriteAnimator animator;
+  Sprite &player;
+  SpriteFrameset &frameset;
 };
 
 #endif

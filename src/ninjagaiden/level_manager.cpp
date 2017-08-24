@@ -7,22 +7,24 @@
 //
 
 #include "level_manager.h"
+#include "objects/enemy_object.h"
 
 #define LEVELS_BASE_PATH "assets/levels/"
 
 LevelManager::LevelManager(Level &level, VideoSDL &video)
-  : video(video), player_object(level.player_frameset, video) {
+  : video(video), player_object(level.player, level.player_frameset, video) {
   backgroundImage = video.create_image(LEVELS_BASE_PATH + level.layers.background_layer.image_name);
-  // TODO enemy objects will represent what's actually getting rendered on screen or is about to be.
-  // So all enemy data objects will be loaded at the start, but only visible enemies will have active objects.
+  // Should only nearby sprites be "active"?
   for (auto sprite : level.layers.sprite_layer.sprites) {
-    // TODO Load sprite based on its type. Which means we need to use the "type" property in Tiled
-    // TODO pass sprite_spec to sprite object
+    if (sprite.type == "enemy") {
+      LOG(LOG_DEBUG) << "added enemy!!!!";
+      sprites.push_back(EnemyObject(level.sprite_framesets[sprite.frameset_id], video));
+    }
   }
 }
 
 void LevelManager::update(Level &level, const NESInput &nes_input, float elapsed) {
-  player_object.update(level, nes_input, elapsed);
+  player_object.update(level.layers, nes_input, elapsed);
   camera.update(level.camera, level.player);
 
   //for (auto sprite : sprites) {
@@ -49,9 +51,5 @@ void LevelManager::render(const Level &level) const {
   video.render_texture(backgroundImage.get(), src, dest);
 
   // Player
-  player_object.render(
-      level.player,
-      level.player_frameset,
-      level.camera
-  );
+  player_object.render(level.camera);
 }

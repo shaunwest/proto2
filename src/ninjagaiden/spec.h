@@ -69,9 +69,9 @@ struct SpriteAnimation {
 enum SpriteDirection { DIR_RIGHT, DIR_LEFT, DIR_UP, DIR_DOWN };
 enum SpriteAi { AI_NONE, AI_BASIC };
 
-// TODO should this be SpriteSpec? Should other VOs follow same scheme?
 struct Sprite {
   int frameset_id;
+  std::string type;
   SpriteAnimation animation;
   Vector2i position;
   Size size;
@@ -148,6 +148,7 @@ struct Game {
     {}, // Layers
     {   // Player
       0, // Sprite frameset id
+      "player",
       { // Animation
         FRAMESET_DEFAULT_ID,
         PLAYER_START_ANIMATION,
