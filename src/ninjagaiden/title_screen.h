@@ -17,9 +17,9 @@
 
 class TitleScreen : public Screen {
 public:
-  TitleScreen(Game &game, VideoSDL &video);
-  void update(Game &game, float elapsed);
-  void render(const Game &game) const;
+  TitleScreen(VideoSDL &video);
+  void update(ViewMode &view_mode, const NESInput &input, float elapsed);
+  void render() const;
 private:
   VideoSDL &video;
   UniqueTexture background;

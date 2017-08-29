@@ -8,14 +8,16 @@
 
 #include "enemy_object.h"
 
-EnemyObject::EnemyObject(SpriteFrameset &frameset, VideoSDL &video) : video(video) {
+EnemyObject::EnemyObject(Sprite &sprite, SpriteFrameset &frameset, VideoSDL &video) :
+  frameset(frameset),
+  video(video) {
   image = video.create_image(frameset.image_path);
 }
 
-void EnemyObject::update(Sprite &sprite, Layers &layers, float elapsed) {
+void EnemyObject::update(Layers &layers, float elapsed) {
 
 }
 
-void EnemyObject::render(const Sprite &sprite, const SpriteFrameset &frameset) const {
+void EnemyObject::render() const {
 
 }

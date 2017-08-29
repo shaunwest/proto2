@@ -15,10 +15,10 @@
 
 class Screen {
 public:
-  virtual void update(Game &game, float elapsed) {
+  virtual void update(ViewMode &view_mode, const NESInput &input, float elapsed) {
     LOG(LOG_WARNING) << "Screen::update not implemented";
   };
-  virtual void render(const Game &game) const {
+  virtual void render() const {
     LOG(LOG_WARNING) << "Screen::render not implemented";
   };
   virtual ~Screen() {

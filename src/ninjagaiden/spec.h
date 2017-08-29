@@ -97,6 +97,7 @@ struct Layers {
   BackgroundLayer background_layer;
 };
 
+/*
 struct CameraSpec {
   Vector2i position;
   Size viewport;
@@ -109,7 +110,9 @@ struct Level {
   Sprite player;
   CameraSpec camera;
 };
+*/
 
+/*
 enum ItemId {
   ITEM_NONE,
   ITEM_SHURIKEN,
@@ -128,6 +131,7 @@ enum ViewMode {
   MODE_LOAD_LEVEL_1,
   MODE_UPDATE
 };
+*/
 
 struct Game {
   WindowSpec window = {
@@ -142,6 +146,7 @@ struct Game {
   PlayerStats player_stats = {
     START_LIVES, START_SCORE, START_NINPO, START_ITEM
   };
+  /*
   Level level = {
     {}, // Player frameset // TODO Ehhh... annoying that I don't know what these represent without comments
     {}, // Sprite framesets
@@ -166,6 +171,7 @@ struct Game {
       { CAMERA_VIEW_WIDTH, CAMERA_VIEW_HEIGHT }
     }
   };
+  */
 };
 
 #endif

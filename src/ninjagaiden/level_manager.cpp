@@ -11,41 +11,47 @@
 
 #define LEVELS_BASE_PATH "assets/levels/"
 
-LevelManager::LevelManager(Level &level, VideoSDL &video)
-  : video(video), player_object(level.player, level.player_frameset, video) {
-  backgroundImage = video.create_image(LEVELS_BASE_PATH + level.layers.background_layer.image_name);
+LevelManager::LevelManager(Level level, VideoSDL &video) :
+  level(level),
+  player_object(this->level.player, this->level.sprite_framesets[0], video),
+  video(video),
+  camera_manager(this->level.camera) {
+  backgroundImage = video.create_image(LEVELS_BASE_PATH + this->level.layers.background_layer.image_name);
+
   // Should only nearby sprites be "active"?
+  /*
   for (auto sprite : level.layers.sprite_layer.sprites) {
     if (sprite.type == "enemy") {
       LOG(LOG_DEBUG) << "added enemy!!!!";
-      sprites.push_back(EnemyObject(level.sprite_framesets[sprite.frameset_id], video));
+      sprite_objects.push_back(EnemyObject(sprite, sprite_framesets[sprite.frameset_id], video));
     }
   }
+  */
 }
 
-void LevelManager::update(Level &level, const NESInput &nes_input, float elapsed) {
+void LevelManager::update(const NESInput &nes_input, float elapsed) {
   player_object.update(level.layers, nes_input, elapsed);
-  camera.update(level.camera, level.player);
+  camera_manager.update(level.player);
 
   //for (auto sprite : sprites) {
     // TODO update sprite
   //}
 }
 
-void LevelManager::render(const Level &level) const {
+void LevelManager::render() const {
   // Background
   Recti src(
-      level.camera.position.x,
-      level.camera.position.y,
-      level.camera.viewport.width,
-      level.camera.viewport.height
+    level.camera.position.x,
+    level.camera.position.y,
+    level.camera.viewport.width,
+    level.camera.viewport.height
   );
 
   Recti dest(
-      0,
-      64,
-      level.camera.viewport.width,
-      level.camera.viewport.height
+    0,
+    64,
+    level.camera.viewport.width,
+    level.camera.viewport.height
   );
 
   video.render_texture(backgroundImage.get(), src, dest);

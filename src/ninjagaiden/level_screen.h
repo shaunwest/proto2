@@ -16,12 +16,12 @@
 class LevelScreen : public Screen
 {
 public:
-  // TODO can any of this be const?
-  LevelScreen(Game &game, VideoSDL &video);
-  void update(Game &game, float elapsed);
-  void render(const Game &game) const;
+  LevelScreen(std::string levelPath, GameConfig &config, VideoSDL &video);
+  void update(ViewMode &view_mode, const NESInput &input, float elapsed);
+  void render() const;
+  ~LevelScreen();
 private:
-  LevelManager levelManager;
+  LevelManager * levelManager;
   VideoSDL &video;
 };
 

@@ -13,23 +13,31 @@
 
 #include "objects/player_object.h"
 #include "objects/sprite_object.h"
-#include "camera.h"
+#include "camera_manager.h"
 #include "control/nes_input_manager.h"
 #include "video/video_sdl.h"
+
+struct Level {
+  SpriteFramesets sprite_framesets;
+  Layers layers;
+  Sprite player;
+  Camera camera;
+};
 
 class LevelManager
 {
 public:
-  LevelManager(Level &level, VideoSDL &video);
-  void update(Level &level, const NESInput &nes_input, float elapsed);
-  void render(const Level &level) const;
+  LevelManager(Level level, VideoSDL &video);
+  void update(const NESInput &nes_input, float elapsed);
+  void render() const;
 private:
-  Layers layers;
+  Level level;
+  SpriteFramesets sprite_framesets;
   PlayerObject player_object;
-  SpriteObjectList sprites;
+  SpriteObjectList sprite_objects;
   UniqueTexture backgroundImage;
   VideoSDL &video;
-  Camera camera;
+  CameraManager camera_manager;
 };
 
 #endif

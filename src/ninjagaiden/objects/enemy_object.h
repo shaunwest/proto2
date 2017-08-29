@@ -21,12 +21,13 @@
 class EnemyObject : public SpriteObject
 {
 public:
-  EnemyObject(SpriteFrameset &frameset, VideoSDL &video);
-  void update(Sprite &sprite, Layers &layers, float elapsed);
-  void render(const Sprite &sprite, const SpriteFrameset &frameset) const;
+  EnemyObject(Sprite &sprite, SpriteFrameset &frameset, VideoSDL &video);
+  void update(Layers &layers, float elapsed);
+  void render() const;
 private:
-  UniqueTexture image;
+  SpriteFrameset &frameset;
   VideoSDL &video;
+  UniqueTexture image;
   SpriteAnimator animator;
 };
 

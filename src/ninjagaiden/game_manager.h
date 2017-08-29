@@ -19,11 +19,12 @@
 class GameManager {
 public:
   GameManager(); // TODO is this needed?
-  GameManager(Game game);
+  GameManager(GameConfig config);
   int start();
 private:
   GameTimer timer;
-  Game game;
+  GameConfig config;
+  NESInput input;
 };
 
 #endif

@@ -14,10 +14,10 @@
 
 class SpriteObject {
 public:
-  virtual void update(Level &level, float elapsed) {
+  virtual void update(Layers &layers, float elapsed) {
     LOG(LOG_WARNING) << "SpriteObject::update not implemented";
   };
-  virtual void render(const Sprite &sprite, const SpriteFrameset &frameset) const {
+  virtual void render() const {
     LOG(LOG_WARNING) << "SpriteObject::render not implemented";
   };
   virtual ~SpriteObject() {};
