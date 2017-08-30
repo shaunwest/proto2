@@ -11,8 +11,9 @@
 
 #include "util/log.h"
 #include "video/video_sdl.h"
-#include "ninjagaiden/game.h"
 #include "control/nes_input_manager.h"
+
+#include "game.h"
 
 class Screen {
 public:

@@ -8,7 +8,7 @@
 
 #include "game_manager.h"
 
-#include "level_manager.h"
+#include "level/level_manager.h"
 #include "util/log.h"
 #include "screen.h"
 #include "title_screen.h"

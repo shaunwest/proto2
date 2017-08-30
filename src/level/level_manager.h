@@ -11,8 +11,8 @@
 
 #include <iostream>
 
-#include "objects/player_object.h"
-#include "objects/sprite_object.h"
+#include "object/player_object.h"
+#include "object/sprite_object.h"
 #include "camera_manager.h"
 #include "control/nes_input_manager.h"
 #include "video/video_sdl.h"

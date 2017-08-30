@@ -12,7 +12,7 @@
 #include "screen.h"
 #include "game.h"
 #include "video/video_sdl.h"
-#include "level_manager.h"
+#include "level/level_manager.h"
 
 class LevelScreen : public Screen
 {

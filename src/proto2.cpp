@@ -3,7 +3,7 @@
 
 #include "json/json.h"
 #include "util/log.h"
-#include "ninjagaiden/game_manager.h"
+#include "game/game_manager.h"
 
 #define STRINGIFY(x) x
 #define STRINGIFYMACRO(y) STRINGIFY(y)

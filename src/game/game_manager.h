@@ -13,7 +13,7 @@
 #ifndef game_manager_h
 #define game_manager_h
 
-#include "ninjagaiden/game.h"
+#include "game.h"
 #include "util/timer.h"
 #include "control/nes_input_manager.h"
 

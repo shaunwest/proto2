@@ -7,7 +7,7 @@
 //
 
 #include "level_manager.h"
-#include "objects/enemy_object.h"
+#include "object/enemy_object.h"
 
 #define LEVELS_BASE_PATH "assets/levels/"
 

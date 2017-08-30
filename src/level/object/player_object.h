@@ -5,8 +5,6 @@
 //  Created by Shaun West on 7/24/17.
 //
 //
-// TODO rename objects folder to object
-
 
 #ifndef player_object_h
 #define player_object_h
@@ -16,13 +14,12 @@
 #include "world/layers.h"
 #include "video/video_sdl.h"
 #include "control/nes_input_manager.h"
-#include "ninjagaiden/camera_manager.h"
+#include "level/camera_manager.h"
 
 class PlayerObject
 {
 public:
   PlayerObject(Sprite &sprite, SpriteFrameset &frameset, VideoSDL &video);
-  //void update(Level &level, const NESInput &input, float elapsed);
   void update(const Layers &layers, const NESInput &input, float elapsed);
   void render(const Camera &camera) const;
 private:
