@@ -9,7 +9,8 @@
 #ifndef action_h
 #define action_h
 
-#include "spec.h"
+#include "sprite/sprite.h"
+#include "util/geom.h"
 
 class Action
 {

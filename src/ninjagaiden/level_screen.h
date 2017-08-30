@@ -10,18 +10,18 @@
 #define level_screen_h
 
 #include "screen.h"
+#include "game.h"
 #include "video/video_sdl.h"
 #include "level_manager.h"
 
 class LevelScreen : public Screen
 {
 public:
-  LevelScreen(std::string levelPath, GameConfig &config, VideoSDL &video);
+  LevelScreen(std::string levelPath, Game &game, VideoSDL &video);
   void update(ViewMode &view_mode, const NESInput &input, float elapsed);
   void render() const;
-  ~LevelScreen();
 private:
-  LevelManager * levelManager;
+  ULevelManager levelManager;
   VideoSDL &video;
 };
 

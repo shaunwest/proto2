@@ -9,8 +9,18 @@
 #ifndef collision_h
 #define collision_h
 
-#include "ninjagaiden/spec.h"
 #include "util/geom.h"
+
+enum CollisionType {
+  COLLISION_TYPE_NORMAL, COLLISION_TYPE_PASSTHRU
+};
+
+struct CollisionBox {
+  Recti rect;
+  CollisionType type;
+};
+
+typedef std::vector<CollisionBox> CollisionBoxList;
 
 class Collision
 {

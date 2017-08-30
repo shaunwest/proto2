@@ -11,7 +11,8 @@
 
 #include "util/log.h"
 #include "video/video_sdl.h"
-#include "spec.h"
+#include "ninjagaiden/game.h"
+#include "control/nes_input_manager.h"
 
 class Screen {
 public:
@@ -21,9 +22,7 @@ public:
   virtual void render() const {
     LOG(LOG_WARNING) << "Screen::render not implemented";
   };
-  virtual ~Screen() {
-    LOG(LOG_DEBUG) << "Screen::~Screen called";
-  };
+  virtual ~Screen() {};
 };
 
 struct ScreenDeleter

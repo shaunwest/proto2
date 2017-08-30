@@ -38,4 +38,4 @@ private:
   UniqueFont font;
 };
 
-#endif /* font_ttf_h */
+#endif

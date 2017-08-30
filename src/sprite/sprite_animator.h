@@ -10,8 +10,26 @@
 #define sprite_animator_h
 
 #include "video/video_sdl.h"
-//#include "game/level_data.h"
-#include "ninjagaiden/spec.h"
+
+#include "sprite.h"
+
+struct SpriteFrame {
+  int atlas_x;
+  int atlas_y;
+  float duration;
+  bool rotated;
+};
+
+typedef std::map<std::string, std::vector<SpriteFrame>> FrameMap;
+
+struct SpriteFrameset {
+  std::string image_path;
+  int sprite_width;
+  int sprite_height;
+  FrameMap frames;
+};
+
+typedef std::map<int, SpriteFrameset> SpriteFramesets;
 
 class SpriteAnimator
 {

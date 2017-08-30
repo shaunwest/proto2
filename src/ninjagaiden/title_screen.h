@@ -13,7 +13,6 @@
 #include "control/nes_input_manager.h"
 #include "util/geom.h"
 #include "screen.h"
-#include "spec.h"
 
 class TitleScreen : public Screen {
 public:

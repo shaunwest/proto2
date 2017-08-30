@@ -13,17 +13,18 @@
 #ifndef game_manager_h
 #define game_manager_h
 
+#include "ninjagaiden/game.h"
 #include "util/timer.h"
-#include "spec.h"
+#include "control/nes_input_manager.h"
 
 class GameManager {
 public:
   GameManager(); // TODO is this needed?
-  GameManager(GameConfig config);
+  GameManager(Game game);
   int start();
 private:
   GameTimer timer;
-  GameConfig config;
+  Game game;
   NESInput input;
 };
 

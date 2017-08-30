@@ -14,16 +14,15 @@
 #include "title_screen.h"
 #include "level_screen.h"
 
-
 LogLevel Logger::reportingLevel = LOG_DEBUG;
 
 GameManager::GameManager() {}
 
-GameManager::GameManager(GameConfig config) : config(config) {}
+GameManager::GameManager(Game game) : game(game) {}
 
 int GameManager::start() {
   // Init video
-  VideoSDL video(config.window);
+  VideoSDL video(game.window);
 
   // Init input
   NESInputManager input_manager;
@@ -31,7 +30,7 @@ int GameManager::start() {
   // This will point to the current screen
   // Also, set current_screen mode to the title screen
   UScreen current_screen;
-  config.view_mode = MODE_LOAD_TITLE;
+  game.view_mode = MODE_LOAD_TITLE;
 
   // Main game loop
   bool quit = false;
@@ -64,24 +63,24 @@ int GameManager::start() {
         quit = true;
       } else if (input.fullscreen && input.fullscreen_count > 15) {
         LOG(LOG_INFO) << "F was pressed";
-        config.window.fullscreen = !config.window.fullscreen;
+        game.window.fullscreen = !game.window.fullscreen;
         input.fullscreen_count = 0;
-        video.init_window(config.window);
+        video.init_window(game.window);
       }
 
       // Handle current_screen modes
-      switch (config.view_mode) {
+      switch (game.view_mode) {
         case MODE_LOAD_TITLE:
           current_screen = UTitleScreen(new TitleScreen(video));
-          config.view_mode = MODE_UPDATE;
+          game.view_mode = MODE_UPDATE;
           break;
         case MODE_LOAD_LEVEL_1:
           //game.level.layers = level_loader.load("levels/level1_1.json");
-          current_screen = ULevelScreen(new LevelScreen("levels/level1_1.json", config, video));
-          config.view_mode = MODE_UPDATE;
+          current_screen = ULevelScreen(new LevelScreen("levels/level1_1.json", game, video));
+          game.view_mode = MODE_UPDATE;
           break;
         case MODE_UPDATE:
-          current_screen->update(config.view_mode, input, timer.get_time().elapsed);
+          current_screen->update(game.view_mode, input, timer.get_time().elapsed);
           break;
       }
     }

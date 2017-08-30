@@ -13,7 +13,9 @@
 
 #include "video/video_sdl.h"
 #include "json/json.h"
+#include "sprite/sprite_animator.h"
 
+/*
 // TODO I think these structs should be defined elsewhere, but independent of implementation
 struct SpriteFrame {
   int atlas_x;
@@ -32,6 +34,7 @@ struct SpriteFrameset {
 };
 
 typedef std::map<int, SpriteFrameset> SpriteFramesets;
+*/
 
 class AsepriteLoader
 {

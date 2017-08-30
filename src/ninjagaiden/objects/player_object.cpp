@@ -9,8 +9,8 @@
 #include "player_object.h"
 
 #include "util/geom.h"
-#include "ninjagaiden/action.h"
-#include "ninjagaiden/collision.h"
+#include "world/action.h"
+#include "world/collision.h"
 
 PlayerObject::PlayerObject(Sprite &sprite, SpriteFrameset &frameset, VideoSDL &video) :
   sprite(sprite),

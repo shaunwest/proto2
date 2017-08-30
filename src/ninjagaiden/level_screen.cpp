@@ -23,7 +23,7 @@
 #include "loader/tiled_loader.h"
 #include "loader/aseprite_loader.h"
 
-LevelScreen::LevelScreen(std::string levelPath, GameConfig &config, VideoSDL &video) : video(video) {
+LevelScreen::LevelScreen(std::string levelPath, Game &game, VideoSDL &video) : video(video) {
   TiledLoader level_loader;
   AsepriteLoader sprite_loader;
 
@@ -55,7 +55,7 @@ LevelScreen::LevelScreen(std::string levelPath, GameConfig &config, VideoSDL &vi
     }
   };
 
-  levelManager = new LevelManager(level, video); // TODO needs to be deleted!
+  levelManager = ULevelManager(new LevelManager(level, video));
 }
 
 void LevelScreen::update(ViewMode &view_mode, const NESInput &input, float elapsed) {
@@ -64,8 +64,4 @@ void LevelScreen::update(ViewMode &view_mode, const NESInput &input, float elaps
 
 void LevelScreen::render() const {
   levelManager->render();
-}
-
-LevelScreen::~LevelScreen() {
-  delete levelManager;
 }

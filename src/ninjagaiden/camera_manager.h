@@ -9,7 +9,7 @@
 #ifndef camera_manager_h
 #define camera_manager_h
 
-#include "spec.h"
+#include "sprite/sprite.h"
 
 struct Camera {
   Vector2i position;

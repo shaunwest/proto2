@@ -1,12 +1,15 @@
 //
-//  game_config.h
+//  game.h
 //  Proto2
 //
 //  Created by Shaun West on 8/7/17.
 //
 
+#ifndef game_h
+#define game_h
+
 #define WINDOW_TITLE    "Ninja Gaiden Demo"
-#define WINDOW_WIDTH    294
+#define WINDOW_WIDTH    256 // 294 // <- more accurate
 #define WINDOW_HEIGHT   240
 #define WINDOW_SCALE    2
 #define FULLSCREEN      false
@@ -17,22 +20,6 @@
 #define START_SCORE 0
 #define START_NINPO 0
 #define START_ITEM  ITEM_NONE
-
-/*
-#define PLAYER_START_ANIMATION      "idle"
-#define PLAYER_START_X              16
-#define PLAYER_START_Y              186
-#define PLAYER_WIDTH                32
-#define PLAYER_HEIGHT               32
-#define FRAMESET_DEFAULT_ID         0
-#define ANIMATION_DEFAULT_DURATION  0
-#define ANIMATION_START_INDEX       0
-
-#define CAMERA_START_X              0
-#define CAMERA_START_Y              0
-#define CAMERA_VIEW_WIDTH           LOGICAL_WIDTH
-#define CAMERA_VIEW_HEIGHT          176
-*/
 
 #include <iostream>
 #include "util/geom.h"
@@ -57,7 +44,7 @@ enum ViewMode {
   MODE_UPDATE
 };
 
-struct GameConfig {
+struct Game {
   WindowSpec window = {
     WINDOW_TITLE,
     { WINDOW_WIDTH, WINDOW_HEIGHT },
@@ -72,3 +59,4 @@ struct GameConfig {
   };
 };
 
+#endif

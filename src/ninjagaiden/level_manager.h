@@ -40,4 +40,14 @@ private:
   CameraManager camera_manager;
 };
 
+struct LevelManagerDeleter
+{
+  void operator()(LevelManager *lm) const {
+    delete lm;
+    LOG(LOG_INFO) << "Deleted LevelManager";
+  }
+};
+
+typedef std::unique_ptr<LevelManager, LevelManagerDeleter> ULevelManager;
+
 #endif

@@ -5,15 +5,18 @@
 //  Created by Shaun West on 7/24/17.
 //
 //
+// TODO rename objects folder to object
+
 
 #ifndef player_object_h
 #define player_object_h
 
-#include "ninjagaiden/spec.h"
-#include "ninjagaiden/camera_manager.h"
-#include "video/video_sdl.h"
+#include "sprite/sprite.h"
 #include "sprite/sprite_animator.h"
+#include "world/layers.h"
+#include "video/video_sdl.h"
 #include "control/nes_input_manager.h"
+#include "ninjagaiden/camera_manager.h"
 
 class PlayerObject
 {

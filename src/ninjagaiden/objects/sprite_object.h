@@ -10,7 +10,8 @@
 #define sprite_object_h
 
 #include "util/log.h"
-#include "ninjagaiden/spec.h"
+#include "sprite/sprite.h"
+#include "world/layers.h"
 
 class SpriteObject {
 public:

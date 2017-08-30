@@ -11,8 +11,9 @@
 
 #include <iostream>
 
-#include "ninjagaiden/spec.h"
 #include "json/json.h"
+#include "world/layers.h"
+#include "world/collision.h"
 
 class TiledLoader
 {
