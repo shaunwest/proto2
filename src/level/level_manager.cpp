@@ -16,26 +16,32 @@ LevelManager::LevelManager(Level level, VideoSDL &video) :
   player_object(this->level.player, this->level.sprite_framesets[0], video),
   video(video),
   camera_manager(this->level.camera) {
-  backgroundImage = video.create_image(LEVELS_BASE_PATH + this->level.layers.background_layer.image_name);
+  backgroundImage = video.create_image(LEVELS_BASE_PATH + this->level.layers.background.image_name);
 
   // Should only nearby sprites be "active"?
-  /*
-  for (auto sprite : level.layers.sprite_layer.sprites) {
+  for (auto &sprite : this->level.layers.sprite.sprites) {
     if (sprite.type == "enemy") {
-      LOG(LOG_DEBUG) << "added enemy!!!!";
-      sprite_objects.push_back(EnemyObject(sprite, sprite_framesets[sprite.frameset_id], video));
+      LOG(LOG_DEBUG) << "added enemy" << " Frameset id" << sprite.frameset_id;
+      sprite_objects.push_back(
+          new EnemyObject(sprite, this->level.sprite_framesets[sprite.frameset_id], video));
     }
   }
-  */
+}
+
+LevelManager::~LevelManager() {
+  for (auto sprite : sprite_objects) {
+    delete sprite;
+  }
+  sprite_objects.clear();
 }
 
 void LevelManager::update(const NESInput &nes_input, float elapsed) {
   player_object.update(level.layers, nes_input, elapsed);
   camera_manager.update(level.player);
 
-  //for (auto sprite : sprites) {
-    // TODO update sprite
-  //}
+  for (auto sprite_object : sprite_objects) {
+    sprite_object->update(level.layers, elapsed);
+  }
 }
 
 void LevelManager::render() const {
@@ -47,9 +53,10 @@ void LevelManager::render() const {
     level.camera.viewport.height
   );
 
+  // Position below stats area
   Recti dest(
-    0,
-    64,
+    level.layers.background.position.x,
+    level.layers.background.position.y,
     level.camera.viewport.width,
     level.camera.viewport.height
   );
@@ -58,4 +65,9 @@ void LevelManager::render() const {
 
   // Player
   player_object.render(level.camera);
+
+  // Sprites
+  for (auto sprite_object : sprite_objects) {
+    sprite_object->render(level.camera);
+  }
 }

@@ -1,8 +1,11 @@
-{ "height":22,
+{ "backgroundcolor":"#4e8f37",
+ "height":30,
  "layers":[
         {
          "image":"level1_1.png",
          "name":"Background",
+         "offsetx":0,
+         "offsety":64,
          "opacity":1,
          "properties":
             {
@@ -30,7 +33,7 @@
                  "visible":true,
                  "width":704,
                  "x":0,
-                 "y":154
+                 "y":219
                 }, 
                 {
                  "height":16,
@@ -41,7 +44,7 @@
                  "visible":true,
                  "width":144,
                  "x":704,
-                 "y":138
+                 "y":203
                 }],
          "opacity":1,
          "properties":
@@ -78,7 +81,7 @@
                  "visible":true,
                  "width":32,
                  "x":212,
-                 "y":122
+                 "y":187
                 }],
          "opacity":1,
          "properties":

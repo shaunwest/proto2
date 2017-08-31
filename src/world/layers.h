@@ -22,6 +22,7 @@ struct SpriteLayer {
 
 struct BackgroundLayer {
   std::string image_name;
+  Vector2i position;
 };
 
 struct CollisionLayer {
@@ -29,9 +30,9 @@ struct CollisionLayer {
 };
 
 struct Layers {
-  CollisionLayer collision_layer;
-  SpriteLayer sprite_layer;
-  BackgroundLayer background_layer;
+  CollisionLayer collision;
+  SpriteLayer sprite;
+  BackgroundLayer background;
 };
 
 #endif

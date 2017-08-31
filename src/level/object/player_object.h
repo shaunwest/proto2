@@ -37,6 +37,4 @@ private:
   SpriteAnimator animator;
 };
 
-typedef std::vector<PlayerObject> PlayerObjectList;
-
 #endif

@@ -19,8 +19,6 @@ PlayerObject::PlayerObject(Sprite &sprite, SpriteFrameset &frameset, VideoSDL &v
   playerImage = video.create_image(frameset.image_path);
 }
 
-// FIXME: need to adjust collisions because coordinates don't take HUD into consideration.
-// made a temporary fix in tiled_loader.cpp
 void PlayerObject::update(const Layers &layers, const NESInput &input, float elapsed) {
   // Update left & right acceleration
   update_movement(sprite.physics.acceleration, input);
@@ -67,7 +65,7 @@ void PlayerObject::update_movement(Vector2f &acceleration, const NESInput &input
 }
 
 void PlayerObject::update_collisions(const Recti &new_hitbox, const Recti &old_hitbox, const Layers &layers) {
-  Vector2i boxes_resolution = Collision::boxes(new_hitbox, old_hitbox, layers.collision_layer.boxes);
+  Vector2i boxes_resolution = Collision::boxes(new_hitbox, old_hitbox, layers.collision.boxes);
 
   // Halt if hit wall
   if (boxes_resolution.x != 0) {

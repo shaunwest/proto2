@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="416" height="22" tilewidth="8" tileheight="8" nextobjectid="10">
- <imagelayer name="Background">
+<map version="1.0" tiledversion="1.0.2" orientation="orthogonal" renderorder="right-down" width="416" height="30" tilewidth="8" tileheight="8" backgroundcolor="#4e8f37" nextobjectid="10">
+ <imagelayer name="Background" offsetx="0" offsety="64">
   <image source="../../assets/levels/level1_1.png" width="3328" height="176"/>
   <properties>
    <property name="subtype" value="background"/>
@@ -10,14 +10,14 @@
   <properties>
    <property name="subtype" value="collision"/>
   </properties>
-  <object id="6" x="0" y="154" width="704" height="20"/>
-  <object id="7" x="704" y="138" width="144" height="16"/>
+  <object id="6" x="0" y="219" width="704" height="20"/>
+  <object id="7" x="704" y="203" width="144" height="16"/>
  </objectgroup>
  <objectgroup name="Sprites">
   <properties>
    <property name="subtype" value="sprite"/>
   </properties>
-  <object id="8" name="Enemy" type="enemy" x="212" y="122" width="32" height="32">
+  <object id="8" name="Enemy" type="enemy" x="212" y="187" width="32" height="32">
    <properties>
     <property name="frameset" type="int" value="1"/>
    </properties>

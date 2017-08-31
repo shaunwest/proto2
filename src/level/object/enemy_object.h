@@ -13,14 +13,16 @@
 #include "sprite_object.h"
 #include "sprite/sprite.h"
 #include "sprite/sprite_animator.h"
+#include "level/camera_manager.h"
 
 class EnemyObject : public SpriteObject
 {
 public:
   EnemyObject(Sprite &sprite, SpriteFrameset &frameset, VideoSDL &video);
   void update(Layers &layers, float elapsed);
-  void render() const;
+  void render(const Camera &camera) const;
 private:
+  Sprite &sprite;
   SpriteFrameset &frameset;
   VideoSDL &video;
   UniqueTexture image;

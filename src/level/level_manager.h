@@ -30,14 +30,15 @@ public:
   LevelManager(Level level, VideoSDL &video);
   void update(const NESInput &nes_input, float elapsed);
   void render() const;
+  ~LevelManager();
 private:
   Level level;
   SpriteFramesets sprite_framesets;
   PlayerObject player_object;
   SpriteObjectList sprite_objects;
-  UniqueTexture backgroundImage;
   VideoSDL &video;
   CameraManager camera_manager;
+  UniqueTexture backgroundImage;
 };
 
 struct LevelManagerDeleter

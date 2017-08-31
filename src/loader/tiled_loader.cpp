@@ -36,13 +36,13 @@ Layers TiledLoader::get_layers(Json::Value layers_config) {
     }
 
     if (layer_config[PROPERTIES_KEY][SUBTYPE_KEY] == COLLISION_LAYER) {
-      new_layers.collision_layer = get_collision_layer(layer_config);
+      new_layers.collision = get_collision_layer(layer_config);
     }
     else if (layer_config[PROPERTIES_KEY][SUBTYPE_KEY] == SPRITE_LAYER) {
-      new_layers.sprite_layer = get_sprite_layer(layer_config);
+      new_layers.sprite = get_sprite_layer(layer_config);
     }
     else if (layer_config[PROPERTIES_KEY][SUBTYPE_KEY] == BACKGROUND_LAYER) {
-      new_layers.background_layer = get_background_layer(layer_config);
+      new_layers.background = get_background_layer(layer_config);
     }
     else {
       LOG(LOG_WARNING) << "No valid subtype found for layer.";
@@ -75,7 +75,7 @@ CollisionLayer TiledLoader::get_collision_layer(Json::Value layer_config) {
 CollisionBox TiledLoader::get_collision_box(Json::Value box_config) {
   Recti rect(
     box_config["x"].asInt(),
-    box_config["y"].asInt() + 64, // FIXME this can't be here
+    box_config["y"].asInt(),
     box_config["width"].asInt(),
     box_config["height"].asInt()
   );
@@ -112,15 +112,13 @@ Sprite TiledLoader::get_sprite(Json::Value sprite_config) {
     sprite_config[PROPERTIES_KEY]["frameset"].asInt() : 0;
 
   // Create the sprite
-  // Note: Tiled sets "y" value strangely. Need to subtract the height of the sprite
-  // to get correct value
   Sprite sprite = {
     type,
     sprite_config["type"].asString(),
     sprite_animation,
     {
       sprite_config["x"].asInt(),
-      sprite_config["y"].asInt() - sprite_config["height"].asInt()
+      sprite_config["y"].asInt()
     }
   };
 
@@ -133,7 +131,12 @@ Sprite TiledLoader::get_sprite(Json::Value sprite_config) {
 }
 
 BackgroundLayer TiledLoader::get_background_layer(Json::Value layer_config) {
-  BackgroundLayer new_layer;
-  new_layer.image_name = layer_config["image"].asString();
-  return new_layer;
+  BackgroundLayer layer;
+  layer.image_name = layer_config["image"].asString();
+  layer.position = {
+    layer_config["offsetx"].asInt(),
+    layer_config["offsety"].asInt()
+  };
+
+  return layer;
 }

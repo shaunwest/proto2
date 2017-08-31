@@ -12,18 +12,19 @@
 #include "util/log.h"
 #include "sprite/sprite.h"
 #include "world/layers.h"
+#include "level/camera_manager.h"
 
 class SpriteObject {
 public:
   virtual void update(Layers &layers, float elapsed) {
     LOG(LOG_WARNING) << "SpriteObject::update not implemented";
   };
-  virtual void render() const {
+  virtual void render(const Camera &camera) const {
     LOG(LOG_WARNING) << "SpriteObject::render not implemented";
   };
   virtual ~SpriteObject() {};
 };
 
-typedef std::vector<SpriteObject> SpriteObjectList;
+typedef std::vector<SpriteObject *> SpriteObjectList;
 
 #endif
